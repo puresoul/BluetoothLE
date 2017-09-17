@@ -10,6 +10,7 @@
 //*********************************************************
 
 using System;
+using System.Threading;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -33,6 +34,7 @@ namespace SDKTemplate
     // with an unknown service with unknown characteristics.
     // In practice, your app will be interested in a specific service with
     // a specific characteristic.
+
     public sealed partial class Scenario2_Client : Page
     {
         private MainPage rootPage = MainPage.Current;
@@ -58,6 +60,30 @@ namespace SDKTemplate
         readonly int E_DEVICE_NOT_AVAILABLE = unchecked((int)0x800710df); // HRESULT_FROM_WIN32(ERROR_DEVICE_NOT_AVAILABLE)
         #endregion
 
+        #region Enumerating Services
+
+        private async Task<bool> ClearBluetoothLEDeviceAsync()
+        {
+            if (subscribedForNotifications)
+            {
+                // Need to clear the CCCD from the remote device so we stop receiving notifications*/
+                var result = await registeredCharacteristic.WriteClientCharacteristicConfigurationDescriptorAsync(GattClientCharacteristicConfigurationDescriptorValue.None);
+                if (result != GattCommunicationStatus.Success)
+                {
+                    return false;
+                }
+                else
+                {
+                    selectedCharacteristic.ValueChanged -= Characteristic_ValueChanged;
+                    subscribedForNotifications = true;
+                }
+            }
+            bluetoothLeDevice?.Dispose();
+            bluetoothLeDevice = null;
+            return true;
+
+        }
+
         private void StartBleDeviceWatcher()
         {
             // Additional properties we would like about the device.
@@ -77,9 +103,6 @@ namespace SDKTemplate
 
             // Start over with an empty collection.
             KnownDevices.Clear();
-
-            // Start the watcher.
-            
         }
 
         private void StopBleDeviceWatcher()
@@ -93,13 +116,79 @@ namespace SDKTemplate
                 deviceWatcher = null;
             }
         }
+
+        private async void Connect()
+        {
+               int i = 0;
+               if (!await ClearBluetoothLEDeviceAsync())
+               {
+                   //  rootPage.NotifyUser("Error: Unable to reset state, try again.", NotifyType.ErrorMessage);
+                   return;
+               }
+
+            while (bluetoothLeDevice == null || bluetoothLeDevice != null)
+            {
+                try
+                {
+                    // BT_Code: BluetoothLEDevice.FromIdAsync must be called from a UI thread because it may prompt for consent.
+                    bluetoothLeDevice = await BluetoothLEDevice.FromIdAsync(rootPage.SelectedBleDeviceId);
+
+                    if (bluetoothLeDevice == null)
+                    {
+                        rootPage.NotifyUser("Failed to connect to device.", NotifyType.ErrorMessage);
+                    }
+                }
+                catch (Exception ex) when (ex.HResult == E_DEVICE_NOT_AVAILABLE)
+                {
+                    rootPage.NotifyUser("Bluetooth radio is not on.", NotifyType.ErrorMessage);
+                }
+
+                if (bluetoothLeDevice != null)
+                {
+                    // Note: BluetoothLEDevice.GattServices property will return an empty list for unpaired devices. For all uses we recommend using the GetGattServicesAsync method.
+                    // BT_Code: GetGattServicesAsync returns a list of all the supported services of the device (even if it's not paired to the system).
+                    // If the services supported by the device are expected to change during BT usage, subscribe to the GattServicesChanged event.
+                    GattDeviceServicesResult resultx = await bluetoothLeDevice.GetGattServicesAsync(BluetoothCacheMode.Uncached);
+
+                    if (resultx.Status == GattCommunicationStatus.Success)
+                    {
+                        var services = resultx.Services;
+                        //rootPage.NotifyUser(String.Format("Found {0} services", services.Count), NotifyType.StatusMessage);
+
+                        foreach (var service in services)
+                        {
+                            rootPage.NotifyUser(service.Uuid.ToString(), NotifyType.StatusMessage);
+                            ServiceCollection.Add(new BluetoothLEAttributeDisplay(service));
+                        }
+
+                        ServiceList.Visibility = Visibility.Visible;
+                        break;
+
+                    }
+                    else
+                    {
+                        rootPage.NotifyUser($"Device unreachable, let's try it for {i} time, again...", NotifyType.ErrorMessage);                                                                     
+                    }
+                    if (i < 30)
+                    {
+                        await Task.Delay(1000);
+                        i++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }   
+            return;
+        }
+
         #region UI Code
         public Scenario2_Client()
-
         {
             if (deviceWatcher == null)
             {
-                StartBleDeviceWatcher();   
+                StartBleDeviceWatcher();
                 rootPage.NotifyUser($"Device watcher started.", NotifyType.StatusMessage);
             }
             else
@@ -108,15 +197,16 @@ namespace SDKTemplate
                 rootPage.NotifyUser($"Device watcher stopped.", NotifyType.StatusMessage);
             }
             InitializeComponent();
+            Connect();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             if (string.IsNullOrEmpty(rootPage.SelectedBleDeviceId))
             {
-                ConnectButton.IsEnabled = true;
+                //ConnectButton.IsEnabled = true;
             }
-            
+
         }
 
         protected override async void OnNavigatedFrom(NavigationEventArgs e)
@@ -128,86 +218,10 @@ namespace SDKTemplate
             }
         }
         #endregion
+#endregion
 
-        #region Enumerating Services
-        private async Task<bool> ClearBluetoothLEDeviceAsync()
-        {
-            if (subscribedForNotifications)
-            {
-                // Need to clear the CCCD from the remote device so we stop receiving notifications
-                var result = await registeredCharacteristic.WriteClientCharacteristicConfigurationDescriptorAsync(GattClientCharacteristicConfigurationDescriptorValue.None);
-                if (result != GattCommunicationStatus.Success)
-                {
-                    return false;
-                }
-                else
-                {
-                    selectedCharacteristic.ValueChanged -= Characteristic_ValueChanged;
-                    subscribedForNotifications = true;
-                }
-            }
-            bluetoothLeDevice?.Dispose();
-            bluetoothLeDevice = null;
-            return true;
-        }
-
-        private async void ConnectButton_Click()
-        {
-            ConnectButton.IsEnabled = true;
-
-            if (!await ClearBluetoothLEDeviceAsync())
-            {
-                rootPage.NotifyUser("Error: Unable to reset state, try again.", NotifyType.ErrorMessage);
-                ConnectButton.IsEnabled = true;
-                return;
-            }
-
-            try
-            {
-                // BT_Code: BluetoothLEDevice.FromIdAsync must be called from a UI thread because it may prompt for consent.
-                bluetoothLeDevice = await BluetoothLEDevice.FromIdAsync(rootPage.SelectedBleDeviceId);
-
-                if (bluetoothLeDevice == null)
-                {
-                    rootPage.NotifyUser("Failed to connect to device.", NotifyType.ErrorMessage);
-                }
-            }
-            catch (Exception ex) when (ex.HResult == E_DEVICE_NOT_AVAILABLE)
-            {
-                rootPage.NotifyUser("Bluetooth radio is not on.", NotifyType.ErrorMessage);
-            }
-
-            if (bluetoothLeDevice != null)
-            {
-                // Note: BluetoothLEDevice.GattServices property will return an empty list for unpaired devices. For all uses we recommend using the GetGattServicesAsync method.
-                // BT_Code: GetGattServicesAsync returns a list of all the supported services of the device (even if it's not paired to the system).
-                // If the services supported by the device are expected to change during BT usage, subscribe to the GattServicesChanged event.
-                GattDeviceServicesResult result = await bluetoothLeDevice.GetGattServicesAsync(BluetoothCacheMode.Uncached);
-
-                if (result.Status == GattCommunicationStatus.Success)
-                {
-                    var services = result.Services;
-                    //rootPage.NotifyUser(String.Format("Found {0} services", services.Count), NotifyType.StatusMessage);
-                    
-                    foreach (var service in services)
-                    {
-                        rootPage.NotifyUser(service.Uuid.ToString(), NotifyType.StatusMessage);
-                        ServiceCollection.Add(new BluetoothLEAttributeDisplay(service));
-                    }
-                    ConnectButton.Visibility = Visibility.Collapsed;
-                    ServiceList.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    rootPage.NotifyUser("Device unreachable", NotifyType.ErrorMessage);
-                }
-            }
-            ConnectButton.IsEnabled = true;
-        }
-        #endregion
-
-        #region Enumerating Characteristics
-        private async void ServiceList_SelectionChanged()
+#region Enumerating Characteristics
+private async void ServiceList_SelectionChanged()
         {
             var attributeInfoDisp = (BluetoothLEAttributeDisplay)ServiceList.SelectedItem;
 
@@ -252,8 +266,7 @@ namespace SDKTemplate
                 CharacteristicCollection.Add(new BluetoothLEAttributeDisplay(c));
                 var lol = new BluetoothLEAttributeDisplay(c);
                 rootPage.NotifyUser(lol.ToString(), NotifyType.StatusMessage);
-            }
-            
+            }        
             CharacteristicList.Visibility = Visibility.Visible;
         }
         #endregion
@@ -264,7 +277,6 @@ namespace SDKTemplate
             if (!subscribedForNotifications)
             {
                 registeredCharacteristic = selectedCharacteristic;
-                rootPage.NotifyUser($"{selectedCharacteristic}", NotifyType.StatusMessage);
                 registeredCharacteristic.ValueChanged += Characteristic_ValueChanged;
                 subscribedForNotifications = true;
             }
@@ -291,7 +303,7 @@ namespace SDKTemplate
                 EnableCharacteristicPanels(GattCharacteristicProperties.None);
                 return;
             }
-
+            rootPage.NotifyUser($"{(BluetoothLEAttributeDisplay)CharacteristicList.SelectedItem}", NotifyType.StatusMessage);
             selectedCharacteristic = attributeInfoDisp.characteristic;
             if (selectedCharacteristic == null)
             {
@@ -519,7 +531,7 @@ namespace SDKTemplate
                 result += "4 Units - " + Convert.ToString(data[3]) + "\n";
                 result += "5 M - " + Convert.ToString(data[4]) + "\n";
                 result += "6 K - " + Convert.ToString(data[5]) + "\n";
-                result += "7 Milis - " + Convert.ToString(data[6]) + "\n";
+                result += "7 G - " + Convert.ToString(data[6]) + "\n";
 
             var message = $"{result}";
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,

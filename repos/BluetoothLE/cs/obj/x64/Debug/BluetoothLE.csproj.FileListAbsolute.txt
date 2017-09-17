@@ -198,3 +198,4 @@ C:\Users\adam\source\repos\BluetoothLE\cs\obj\x64\Debug\qualifiers.txt
 C:\Users\adam\source\repos\BluetoothLE\cs\obj\x64\Debug\qualifiers.txt.intermediate
 C:\Users\adam\source\repos\BluetoothLE\cs\obj\x64\Debug\MultipleQualifiersPerDimensionFound.txt
 C:\Users\adam\source\repos\BluetoothLE\cs\obj\x64\Debug\ProjectArchitectures.txt
+C:\Users\adam\source\repos\BluetoothLE\cs\obj\x64\Debug\BluetoothLE.csprojResolveAssemblyReference.cache
