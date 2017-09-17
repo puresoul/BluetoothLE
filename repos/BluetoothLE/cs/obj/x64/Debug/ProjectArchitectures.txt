@@ -1,0 +1,1 @@
+C:\Users\adam\source\repos\BluetoothLE\cs\BluetoothLE.csproj;x64
