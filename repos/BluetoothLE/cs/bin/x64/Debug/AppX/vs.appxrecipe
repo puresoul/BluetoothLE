@@ -19,10 +19,10 @@
     <DeployOptionalPackages>false</DeployOptionalPackages>
     <WindowsSdkPath>C:\Program Files %28x86%29\Windows Kits\10\</WindowsSdkPath>
     <LayoutDir>C:\Users\adam\source\repos\BluetoothLE\cs\bin\x64\Debug\AppX</LayoutDir>
-    <RegisteredManifestChecksum>F0C904177D150E567651784A598EC00EC3221B4FF4C58DF06FF8AA5F2CE35BB3</RegisteredManifestChecksum>
-    <RegisteredPackageMoniker>Microsoft.SDKSamples.BluetoothLE.CS_1.0.0.0_x64__8wekyb3d8bbwe</RegisteredPackageMoniker>
-    <RegisteredUserModeAppID>Microsoft.SDKSamples.BluetoothLE.CS_8wekyb3d8bbwe!BluetoothLE.App</RegisteredUserModeAppID>
-    <RegisteredPackageID>Microsoft.SDKSamples.BluetoothLE.CS</RegisteredPackageID>
+    <RegisteredManifestChecksum>6A03152049B5C14D223D6F5C1A9E3A3A491C00F3B43AE13C085AC75856774BFF</RegisteredManifestChecksum>
+    <RegisteredPackageMoniker>BluetoothLE.CS_1.0.0.0_x64__8wekyb3d8bbwe</RegisteredPackageMoniker>
+    <RegisteredUserModeAppID>BluetoothLE.CS_8wekyb3d8bbwe!BluetoothLE.App</RegisteredUserModeAppID>
+    <RegisteredPackageID>BluetoothLE.CS</RegisteredPackageID>
     <RegisteredPackagePublisher>CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US</RegisteredPackagePublisher>
     <RegisteredVersion>1.0.0.0</RegisteredVersion>
     <JitOptimizationSuppressed>True</JitOptimizationSuppressed>
@@ -31,7 +31,7 @@
     <AppXManifest Include="C:\Users\adam\source\repos\BluetoothLE\cs\bin\x64\Debug\Core\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2017-09-17T22:50:41.377</Modified>
+      <Modified>2017-09-17T23:10:10.168</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
@@ -498,11 +498,11 @@
     <AppxPackagedFile Include="C:\Users\adam\source\repos\BluetoothLE\cs\bin\x64\Debug\resources.pri">
       <PackagePath>resources.pri</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2017-09-17T22:50:41.199</Modified>
+      <Modified>2017-09-17T23:10:09.894</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\adam\source\repos\BluetoothLE\cs\bin\x64\Debug\Core\BluetoothLEUniversal.exe">
       <PackagePath>BluetoothLEUniversal.exe</PackagePath>
-      <Modified>2017-09-17T22:50:41.373</Modified>
+      <Modified>2017-09-17T23:10:10.156</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>

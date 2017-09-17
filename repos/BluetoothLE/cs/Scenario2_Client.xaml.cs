@@ -176,6 +176,7 @@ namespace SDKTemplate
                     }
                     else
                     {
+                        rootPage.NotifyUser("Ok, I give up. Maybe next time...", NotifyType.ErrorMessage);
                         break;
                     }
                 }
