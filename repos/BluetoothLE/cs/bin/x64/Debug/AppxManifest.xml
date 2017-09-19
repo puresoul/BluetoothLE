@@ -21,7 +21,7 @@
     <Resource Language="EN-US" />
   </Resources>
   <Applications>
-    <Application Id="BluetoothLE.App" Executable="BluetoothLEUniversal.exe" EntryPoint="BluetoothLE.App">
+    <Application Id="BluetoothLE.App" Executable="PortableScale.exe" EntryPoint="BluetoothLE.App">
       <uap:VisualElements DisplayName="Portable wireless scale" Square150x150Logo="Assets\squareTile-sdk.png" Square44x44Logo="Assets\SmallTile-sdk.png" Description="Bluetooth Low Energy app for portable wireless scale" BackgroundColor="#00b2f0">
         <uap:SplashScreen Image="Assets\Splash-sdk.png" />
         <uap:DefaultTile>

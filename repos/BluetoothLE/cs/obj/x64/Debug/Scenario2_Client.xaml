@@ -45,17 +45,17 @@
             </TextBlock>
             
 
-            <ComboBox x:ConnectionId='5' x:Name="ServiceList" Margin="0,10,0,0" PlaceholderText="Choose a service" Visibility="Collapsed"
+            <ComboBox x:ConnectionId='5' x:Name="ServiceList" Margin="0,10,0,0" PlaceholderText="Choose a service"
                                                                DisplayMemberPath="Name"
-                                                                              />
-            <ComboBox x:ConnectionId='6' x:Name="CharacteristicList" Margin="0,10,0,0" PlaceholderText="Choose a characteristic" Visibility="Collapsed"
+                                                                               SelectedIndex="-1"/>
+            <ComboBox x:ConnectionId='6' x:Name="CharacteristicList" Margin="0,10,0,0" PlaceholderText="Choose a characteristic" Visibility="Visible"
                                                                        DisplayMemberPath="Name"
-                                                                                      />
+                                                                                      SelectedIndex="-1" />
             <StackPanel Orientation="Horizontal">
                 <Button x:ConnectionId='10' x:Name="CharacteristicReadButton" Content="Read Value"                                                
                         Visibility="Collapsed" Margin="0,0,0,0"/>
                 <Button x:ConnectionId='11' x:Name="ValueChangedSubscribeToggle" Content="Subscribe to value changes"                                                   
-                        Visibility="Collapsed" Margin="0,10,0,0"/>
+                        Visibility="Visible" Margin="0,10,0,0"/>
             </StackPanel>
             <StackPanel x:ConnectionId='7' x:Name="CharacteristicWritePanel" Margin="0,10,0,0"  Visibility="Collapsed">
                 <TextBox x:ConnectionId='9' x:Name="CharacteristicWriteValue" PlaceholderText="Enter text/number to send"/>

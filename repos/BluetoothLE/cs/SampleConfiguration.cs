@@ -29,6 +29,8 @@ namespace SDKTemplate
 
         public string SelectedBleDeviceId = "BluetoothLE#BluetoothLE68:17:29:f9:ae:3d-18:7a:93:0e:79:31";
         public string SelectedBleDeviceName = "Chipsea-BLE";
+        public string SelectedBleService = "0000fff0-0000-1000-8000-00805f9b34fb";
+        public string SelectedBleChara = "0000fff1-0000-1000-8000-00805f9b34fb";
         //public string SelectedBleDeviceName
     }
 

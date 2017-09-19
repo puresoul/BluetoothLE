@@ -15490,9 +15490,9 @@
   },
   "project": {
     "restore": {
-      "projectUniqueName": "C:\\Users\\adam\\source\\repos\\BluetoothLE\\cs\\BluetoothLE.csproj",
-      "projectName": "BluetoothLE",
-      "projectPath": "C:\\Users\\adam\\source\\repos\\BluetoothLE\\cs\\BluetoothLE.csproj",
+      "projectUniqueName": "C:\\Users\\adam\\source\\repos\\BluetoothLE\\cs\\PortableScale.csproj",
+      "projectName": "PortableScale",
+      "projectPath": "C:\\Users\\adam\\source\\repos\\BluetoothLE\\cs\\PortableScale.csproj",
       "projectJsonPath": "C:\\Users\\adam\\source\\repos\\BluetoothLE\\cs\\project.json",
       "packagesPath": "C:\\Users\\adam\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\adam\\source\\repos\\BluetoothLE\\cs\\obj\\",

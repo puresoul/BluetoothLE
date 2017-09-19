@@ -13,7 +13,7 @@ namespace SDKTemplate
 {
     public partial class App : global::Windows.UI.Xaml.Markup.IXamlMetadataProvider
     {
-    private global::SDKTemplate.BluetoothLE_XamlTypeInfo.XamlTypeInfoProvider _provider;
+    private global::SDKTemplate.PortableScale_XamlTypeInfo.XamlTypeInfoProvider _provider;
 
         /// <summary>
         /// GetXamlType(Type)
@@ -22,7 +22,7 @@ namespace SDKTemplate
         {
             if(_provider == null)
             {
-                _provider = new global::SDKTemplate.BluetoothLE_XamlTypeInfo.XamlTypeInfoProvider();
+                _provider = new global::SDKTemplate.PortableScale_XamlTypeInfo.XamlTypeInfoProvider();
             }
             return _provider.GetXamlTypeByType(type);
         }
@@ -34,7 +34,7 @@ namespace SDKTemplate
         {
             if(_provider == null)
             {
-                _provider = new global::SDKTemplate.BluetoothLE_XamlTypeInfo.XamlTypeInfoProvider();
+                _provider = new global::SDKTemplate.PortableScale_XamlTypeInfo.XamlTypeInfoProvider();
             }
             return _provider.GetXamlTypeByName(fullName);
         }
@@ -49,7 +49,7 @@ namespace SDKTemplate
     }
 }
 
-namespace SDKTemplate.BluetoothLE_XamlTypeInfo
+namespace SDKTemplate.PortableScale_XamlTypeInfo
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Windows.UI.Xaml.Build.Tasks"," 14.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -203,8 +203,8 @@ namespace SDKTemplate.BluetoothLE_XamlTypeInfo
 
         private global::Windows.UI.Xaml.Markup.IXamlType CreateXamlType(int typeIndex)
         {
-            global::SDKTemplate.BluetoothLE_XamlTypeInfo.XamlSystemBaseType xamlType = null;
-            global::SDKTemplate.BluetoothLE_XamlTypeInfo.XamlUserType userType;
+            global::SDKTemplate.PortableScale_XamlTypeInfo.XamlSystemBaseType xamlType = null;
+            global::SDKTemplate.PortableScale_XamlTypeInfo.XamlUserType userType;
             string typeName = _typeNameTable[typeIndex];
             global::System.Type type = _typeTable[typeIndex];
 
@@ -212,18 +212,18 @@ namespace SDKTemplate.BluetoothLE_XamlTypeInfo
             {
 
             case 0:   //  SDKTemplate.ScenarioBindingConverter
-                userType = new global::SDKTemplate.BluetoothLE_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
+                userType = new global::SDKTemplate.PortableScale_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
                 userType.Activator = Activate_0_ScenarioBindingConverter;
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
             case 1:   //  Object
-                xamlType = new global::SDKTemplate.BluetoothLE_XamlTypeInfo.XamlSystemBaseType(typeName, type);
+                xamlType = new global::SDKTemplate.PortableScale_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
             case 2:   //  SDKTemplate.MainPage
-                userType = new global::SDKTemplate.BluetoothLE_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Windows.UI.Xaml.Controls.Page"));
+                userType = new global::SDKTemplate.PortableScale_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Windows.UI.Xaml.Controls.Page"));
                 userType.Activator = Activate_2_MainPage;
                 userType.AddMemberName("Scenarios");
                 userType.SetIsLocalType();
@@ -231,22 +231,22 @@ namespace SDKTemplate.BluetoothLE_XamlTypeInfo
                 break;
 
             case 3:   //  Windows.UI.Xaml.Controls.Page
-                xamlType = new global::SDKTemplate.BluetoothLE_XamlTypeInfo.XamlSystemBaseType(typeName, type);
+                xamlType = new global::SDKTemplate.PortableScale_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
             case 4:   //  Windows.UI.Xaml.Controls.UserControl
-                xamlType = new global::SDKTemplate.BluetoothLE_XamlTypeInfo.XamlSystemBaseType(typeName, type);
+                xamlType = new global::SDKTemplate.PortableScale_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
             case 5:   //  System.Collections.Generic.List`1<SDKTemplate.Scenario>
-                userType = new global::SDKTemplate.BluetoothLE_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
+                userType = new global::SDKTemplate.PortableScale_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
                 userType.CollectionAdd = VectorAdd_5_List;
                 userType.SetIsReturnTypeStub();
                 xamlType = userType;
                 break;
 
             case 6:   //  SDKTemplate.Scenario
-                userType = new global::SDKTemplate.BluetoothLE_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
+                userType = new global::SDKTemplate.PortableScale_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
                 userType.Activator = Activate_6_Scenario;
                 userType.AddMemberName("Title");
                 userType.AddMemberName("ClassType");
@@ -255,17 +255,17 @@ namespace SDKTemplate.BluetoothLE_XamlTypeInfo
                 break;
 
             case 7:   //  String
-                xamlType = new global::SDKTemplate.BluetoothLE_XamlTypeInfo.XamlSystemBaseType(typeName, type);
+                xamlType = new global::SDKTemplate.PortableScale_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
             case 8:   //  System.Type
-                userType = new global::SDKTemplate.BluetoothLE_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
+                userType = new global::SDKTemplate.PortableScale_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
                 userType.SetIsReturnTypeStub();
                 xamlType = userType;
                 break;
 
             case 9:   //  SDKTemplate.Scenario2_Client
-                userType = new global::SDKTemplate.BluetoothLE_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Windows.UI.Xaml.Controls.Page"));
+                userType = new global::SDKTemplate.PortableScale_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Windows.UI.Xaml.Controls.Page"));
                 userType.Activator = Activate_9_Scenario2_Client;
                 userType.SetIsLocalType();
                 xamlType = userType;
@@ -303,26 +303,26 @@ namespace SDKTemplate.BluetoothLE_XamlTypeInfo
 
         private global::Windows.UI.Xaml.Markup.IXamlMember CreateXamlMember(string longMemberName)
         {
-            global::SDKTemplate.BluetoothLE_XamlTypeInfo.XamlMember xamlMember = null;
-            global::SDKTemplate.BluetoothLE_XamlTypeInfo.XamlUserType userType;
+            global::SDKTemplate.PortableScale_XamlTypeInfo.XamlMember xamlMember = null;
+            global::SDKTemplate.PortableScale_XamlTypeInfo.XamlUserType userType;
 
             switch (longMemberName)
             {
             case "SDKTemplate.MainPage.Scenarios":
-                userType = (global::SDKTemplate.BluetoothLE_XamlTypeInfo.XamlUserType)GetXamlTypeByName("SDKTemplate.MainPage");
-                xamlMember = new global::SDKTemplate.BluetoothLE_XamlTypeInfo.XamlMember(this, "Scenarios", "System.Collections.Generic.List`1<SDKTemplate.Scenario>");
+                userType = (global::SDKTemplate.PortableScale_XamlTypeInfo.XamlUserType)GetXamlTypeByName("SDKTemplate.MainPage");
+                xamlMember = new global::SDKTemplate.PortableScale_XamlTypeInfo.XamlMember(this, "Scenarios", "System.Collections.Generic.List`1<SDKTemplate.Scenario>");
                 xamlMember.Getter = get_0_MainPage_Scenarios;
                 xamlMember.SetIsReadOnly();
                 break;
             case "SDKTemplate.Scenario.Title":
-                userType = (global::SDKTemplate.BluetoothLE_XamlTypeInfo.XamlUserType)GetXamlTypeByName("SDKTemplate.Scenario");
-                xamlMember = new global::SDKTemplate.BluetoothLE_XamlTypeInfo.XamlMember(this, "Title", "String");
+                userType = (global::SDKTemplate.PortableScale_XamlTypeInfo.XamlUserType)GetXamlTypeByName("SDKTemplate.Scenario");
+                xamlMember = new global::SDKTemplate.PortableScale_XamlTypeInfo.XamlMember(this, "Title", "String");
                 xamlMember.Getter = get_1_Scenario_Title;
                 xamlMember.Setter = set_1_Scenario_Title;
                 break;
             case "SDKTemplate.Scenario.ClassType":
-                userType = (global::SDKTemplate.BluetoothLE_XamlTypeInfo.XamlUserType)GetXamlTypeByName("SDKTemplate.Scenario");
-                xamlMember = new global::SDKTemplate.BluetoothLE_XamlTypeInfo.XamlMember(this, "ClassType", "System.Type");
+                userType = (global::SDKTemplate.PortableScale_XamlTypeInfo.XamlUserType)GetXamlTypeByName("SDKTemplate.Scenario");
+                xamlMember = new global::SDKTemplate.PortableScale_XamlTypeInfo.XamlMember(this, "ClassType", "System.Type");
                 xamlMember.Getter = get_2_Scenario_ClassType;
                 xamlMember.Setter = set_2_Scenario_ClassType;
                 break;
@@ -381,9 +381,9 @@ namespace SDKTemplate.BluetoothLE_XamlTypeInfo
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Windows.UI.Xaml.Build.Tasks"," 14.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-    internal class XamlUserType : global::SDKTemplate.BluetoothLE_XamlTypeInfo.XamlSystemBaseType
+    internal class XamlUserType : global::SDKTemplate.PortableScale_XamlTypeInfo.XamlSystemBaseType
     {
-        global::SDKTemplate.BluetoothLE_XamlTypeInfo.XamlTypeInfoProvider _provider;
+        global::SDKTemplate.PortableScale_XamlTypeInfo.XamlTypeInfoProvider _provider;
         global::Windows.UI.Xaml.Markup.IXamlType _baseType;
         bool _isArray;
         bool _isMarkupExtension;
@@ -397,7 +397,7 @@ namespace SDKTemplate.BluetoothLE_XamlTypeInfo
         global::System.Collections.Generic.Dictionary<string, string> _memberNames;
         global::System.Collections.Generic.Dictionary<string, object> _enumValues;
 
-        public XamlUserType(global::SDKTemplate.BluetoothLE_XamlTypeInfo.XamlTypeInfoProvider provider, string fullName, global::System.Type fullType, global::Windows.UI.Xaml.Markup.IXamlType baseType)
+        public XamlUserType(global::SDKTemplate.PortableScale_XamlTypeInfo.XamlTypeInfoProvider provider, string fullName, global::System.Type fullType, global::Windows.UI.Xaml.Markup.IXamlType baseType)
             :base(fullName, fullType)
         {
             _provider = provider;
@@ -594,7 +594,7 @@ namespace SDKTemplate.BluetoothLE_XamlTypeInfo
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     internal class XamlMember : global::Windows.UI.Xaml.Markup.IXamlMember
     {
-        global::SDKTemplate.BluetoothLE_XamlTypeInfo.XamlTypeInfoProvider _provider;
+        global::SDKTemplate.PortableScale_XamlTypeInfo.XamlTypeInfoProvider _provider;
         string _name;
         bool _isAttachable;
         bool _isDependencyProperty;
@@ -603,7 +603,7 @@ namespace SDKTemplate.BluetoothLE_XamlTypeInfo
         string _typeName;
         string _targetTypeName;
 
-        public XamlMember(global::SDKTemplate.BluetoothLE_XamlTypeInfo.XamlTypeInfoProvider provider, string name, string typeName)
+        public XamlMember(global::SDKTemplate.PortableScale_XamlTypeInfo.XamlTypeInfoProvider provider, string name, string typeName)
         {
             _name = name;
             _typeName = typeName;
