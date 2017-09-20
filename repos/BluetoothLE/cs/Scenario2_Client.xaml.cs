@@ -10,7 +10,7 @@
 //*********************************************************
 
 using System;
-using System.Threading;
+
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -22,7 +22,7 @@ using Windows.Devices.Enumeration;
 using Windows.Security.Cryptography;
 using Windows.Storage.Streams;
 using Windows.UI.Core;
-using Windows.UI.Xaml;
+
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
@@ -331,7 +331,7 @@ namespace SDKTemplate
                     {
                         rootPage.NotifyUser($"Device unreachable, let's try it for {i} time, again...", NotifyType.ErrorMessage);                                                                     
                     }
-                    if (i < 30)
+                    if (i < 3)
                     {
                         await Task.Delay(1000);
                         i++;
@@ -339,14 +339,13 @@ namespace SDKTemplate
                     else
                     {
                         rootPage.NotifyUser("Ok, I give up. Maybe next time...", NotifyType.ErrorMessage);
-                        break;
+                        return;
                     }
                 }
             }
             var attributeInfoDisp = selectedService;
 
             CharacteristicCollection.Clear();
-            //RemoveValueChangedHandler();
 
             IReadOnlyList<GattCharacteristic> characteristics = null;
             try
@@ -452,7 +451,6 @@ namespace SDKTemplate
 
         private void AddValueChangedHandler()
         {
-            //ValueChangedSubscribeToggle.Content = "Unsubscribe from value changes";
             if (!subscribedForNotifications)
             {
                 registeredCharacteristic = selectedCharacteristic;
@@ -463,7 +461,6 @@ namespace SDKTemplate
 
         private void RemoveValueChangedHandler()
         {
-            //ValueChangedSubscribeToggle.Content = "Subscribe to value changes";
             if (subscribedForNotifications)
             {
                 registeredCharacteristic.ValueChanged -= Characteristic_ValueChanged;
@@ -498,7 +495,6 @@ namespace SDKTemplate
 
                     if (status == GattCommunicationStatus.Success)
                     {
-                        //AddValueChangedHandler();
                         rootPage.NotifyUser("Successfully subscribed for value changes", NotifyType.StatusMessage);
                     }
                     else
@@ -525,7 +521,6 @@ namespace SDKTemplate
                     if (result == GattCommunicationStatus.Success)
                     {
                         subscribedForNotifications = false;
-                        //RemoveValueChangedHandler();
                         rootPage.NotifyUser("Successfully un-registered for notifications", NotifyType.StatusMessage);
                     }
                     else
