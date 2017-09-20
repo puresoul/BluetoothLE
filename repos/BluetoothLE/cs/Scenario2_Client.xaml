@@ -38,29 +38,19 @@
             </Grid>
         </DataTemplate>
     </Page.Resources>
-    <ScrollViewer Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="12,10,12,12" HorizontalAlignment="Center" HorizontalScrollMode="Disabled" IsHorizontalRailEnabled="False" IsVerticalRailEnabled="False" VerticalScrollMode="Disabled" VerticalAlignment="Center" VerticalScrollBarVisibility="Disabled">
+    <ScrollViewer Padding="12,10,12,12" HorizontalAlignment="Center" HorizontalScrollMode="Disabled" IsHorizontalRailEnabled="False" IsVerticalRailEnabled="False" VerticalScrollMode="Disabled" VerticalAlignment="Center" VerticalScrollBarVisibility="Disabled" Background="{ThemeResource MenuFlyoutLightDismissOverlayBackground}" Height="313" Margin="82,177,81,150" Width="197">
         <StackPanel Height="Auto" VerticalAlignment="Center" HorizontalAlignment="Center">
             <TextBlock Style="{StaticResource ListItemTextStyle}" TextWrapping="Wrap" Margin="0,10,0,0">
                 Scale Model: <Run Text="{x:Bind rootPage.SelectedBleDeviceName}" FontWeight="Bold"/>
             </TextBlock>
-            
-
-            <ComboBox x:Name="ServiceList" Margin="0,10,0,0" PlaceholderText="Choose a service"
-                      ItemsSource="{x:Bind ServiceCollection}" DisplayMemberPath="Name"
-                      SelectionChanged="{x:Bind ServiceList_SelectionChanged}" SelectedIndex="-1"/>
-            <ComboBox x:Name="CharacteristicList" Margin="0,10,0,0" PlaceholderText="Choose a characteristic" Visibility="Visible"
-                      ItemsSource="{x:Bind CharacteristicCollection}"  DisplayMemberPath="Name"
-                      SelectionChanged="{x:Bind CharacteristicList_SelectionChanged}" SelectedIndex="-1" />
             <StackPanel Orientation="Horizontal">
-                <Button x:Name="CharacteristicReadButton" Content="Read Value" Click="{x:Bind CharacteristicReadButton_Click}"
+                <Button x:Name="CharacteristicReadButton" Content="Read Value"
                         Visibility="Collapsed" Margin="0,0,0,0"/>
-                <Button x:Name="ValueChangedSubscribeToggle" Content="Subscribe to value changes" Click="{x:Bind ValueChangedSubscribeToggle_Click}"
-                        Visibility="Visible" Margin="0,10,0,0"/>
             </StackPanel>
             <StackPanel x:Name="CharacteristicWritePanel" Margin="0,10,0,0"  Visibility="Collapsed">
                 <TextBox x:Name="CharacteristicWriteValue" PlaceholderText="Enter text/number to send"/>
             </StackPanel>
-            <TextBlock x:Name="CharacteristicLatestValue" Margin="0,10,0,0"/>
+            <TextBlock x:Name="CharacteristicLatestValue" Margin="0,10,0,0" Height="179"/>
         </StackPanel>
     </ScrollViewer>
 </Page>

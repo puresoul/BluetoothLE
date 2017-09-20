@@ -44,6 +44,7 @@ namespace SDKTemplate
 
         private BluetoothLEDevice bluetoothLeDevice = null;
         private GattCharacteristic selectedCharacteristic;
+        private GattDeviceService selectedService;
 
         // Only one registered characteristic at a time.
         private GattCharacteristic registeredCharacteristic;
@@ -213,8 +214,8 @@ namespace SDKTemplate
                 // Protect against race condition if the task runs after the app stopped the deviceWatcher.
                 if (sender == deviceWatcher)
                 {
-                    rootPage.NotifyUser($"{KnownDevices.Count} devices found. Enumeration completed.",
-                        NotifyType.StatusMessage);
+                    //rootPage.NotifyUser($"{KnownDevices.Count} devices found. Enumeration completed.",
+                      //  NotifyType.StatusMessage);
                 }
             });
         }
@@ -274,6 +275,7 @@ namespace SDKTemplate
 
         private async void Connect()
         {
+
             int i = 0;
             if (!await ClearBluetoothLEDeviceAsync())
             {
@@ -288,7 +290,7 @@ namespace SDKTemplate
                 {
                     // BT_Code: BluetoothLEDevice.FromIdAsync must be called from a UI thread because it may prompt for consent.
                     bluetoothLeDevice = await BluetoothLEDevice.FromIdAsync(rootPage.SelectedBleDeviceId);
-
+                    
                     if (bluetoothLeDevice == null)
                     {
                         //rootPage.NotifyUser("Failed to connect to device.", NotifyType.ErrorMessage);
@@ -317,7 +319,7 @@ namespace SDKTemplate
                             System.Diagnostics.Debug.WriteLine("service: "+service.Uuid.ToString());
                             if (service.Uuid.ToString() == "0000fff0-0000-1000-8000-00805f9b34fb")
                             {
-                                ServiceCollection.Add(new BluetoothLEAttributeDisplay(service));
+                                selectedService = service;
                             }
                         }
 
@@ -341,68 +343,24 @@ namespace SDKTemplate
                     }
                 }
             }
-            InitializeComponent();
-            return;
-        }
-
-    
-        public Scenario2_Client()
-        {
-            
-            if (deviceWatcher == null)
-            {
-                StartBleDeviceWatcher();
-                rootPage.NotifyUser($"Device watcher started.", NotifyType.StatusMessage);
-            }
-            else
-            {
-                StopBleDeviceWatcher();
-                rootPage.NotifyUser($"Device watcher stopped.", NotifyType.StatusMessage);
-            }
-
-            Connect();
-        }
-
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            if (string.IsNullOrEmpty(rootPage.SelectedBleDeviceId))
-            {
-                //ConnectButton.IsEnabled = true;
-            }
-
-        }
-
-        protected override async void OnNavigatedFrom(NavigationEventArgs e)
-        {
-            var success = await ClearBluetoothLEDeviceAsync();
-            if (!success)
-            {
-                rootPage.NotifyUser("Error: Unable to reset app state", NotifyType.ErrorMessage);
-            }
-        }
-
-
-
-private async void ServiceList_SelectionChanged()
-        {
-            var attributeInfoDisp = (BluetoothLEAttributeDisplay)ServiceList.SelectedItem;
+            var attributeInfoDisp = selectedService;
 
             CharacteristicCollection.Clear();
-            RemoveValueChangedHandler();
+            //RemoveValueChangedHandler();
 
             IReadOnlyList<GattCharacteristic> characteristics = null;
             try
             {
                 // Ensure we have access to the device.
-                var accessStatus = await attributeInfoDisp.service.RequestAccessAsync();
+                var accessStatus = await attributeInfoDisp.RequestAccessAsync();
                 if (accessStatus == DeviceAccessStatus.Allowed)
                 {
                     // BT_Code: Get all the child characteristics of a service. Use the cache mode to specify uncached characterstics only 
                     // and the new Async functions to get the characteristics of unpaired devices as well. 
-                    var result = await attributeInfoDisp.service.GetCharacteristicsAsync(BluetoothCacheMode.Uncached);
-                    if (result.Status == GattCommunicationStatus.Success)
+                    var resulty = await attributeInfoDisp.GetCharacteristicsAsync(BluetoothCacheMode.Uncached);
+                    if (resulty.Status == GattCommunicationStatus.Success)
                     {
-                        characteristics = result.Characteristics;
+                        characteristics = resulty.Characteristics;
                     }
                 }
                 else
@@ -427,54 +385,11 @@ private async void ServiceList_SelectionChanged()
             {
                 if (c.Uuid.ToString() == "0000fff1-0000-1000-8000-00805f9b34fb")
                 {
-                    CharacteristicCollection.Add(new BluetoothLEAttributeDisplay(c));
+                    selectedCharacteristic = c;
                 }
-                System.Diagnostics.Debug.WriteLine("characteristic: "+c.Uuid.ToString());
-            }        
-            CharacteristicList.Visibility = Visibility.Visible;
-        }
-
-
-        private void AddValueChangedHandler()
-        {
-            ValueChangedSubscribeToggle.Content = "Unsubscribe from value changes";
-            if (!subscribedForNotifications)
-            {
-                registeredCharacteristic = selectedCharacteristic;
-                registeredCharacteristic.ValueChanged += Characteristic_ValueChanged;
-                subscribedForNotifications = true;
+                System.Diagnostics.Debug.WriteLine("characteristic: " + c.Uuid.ToString());
             }
-        }
-
-        private void RemoveValueChangedHandler()
-        {
-            ValueChangedSubscribeToggle.Content = "Subscribe to value changes";
-            if (subscribedForNotifications)
-            {
-                registeredCharacteristic.ValueChanged -= Characteristic_ValueChanged;
-                registeredCharacteristic = null;
-                subscribedForNotifications = false;
-            }
-        }
-
-        private async void CharacteristicList_SelectionChanged()
-        {
-            selectedCharacteristic = null;
-
-            var attributeInfoDisp = (BluetoothLEAttributeDisplay)CharacteristicList.SelectedItem;
-            if (attributeInfoDisp == null)
-            {
-                EnableCharacteristicPanels(GattCharacteristicProperties.None);
-                return;
-            }
-            rootPage.NotifyUser($"{(BluetoothLEAttributeDisplay)CharacteristicList.SelectedItem}", NotifyType.StatusMessage);
-            selectedCharacteristic = attributeInfoDisp.characteristic;
-            if (selectedCharacteristic == null)
-            {
-                rootPage.NotifyUser("No characteristic selected", NotifyType.ErrorMessage);
-                return;
-            }
-
+            //CharacteristicList.Visibility = Visibility.Visible;
             // Get all the child descriptors of a characteristics. Use the cache mode to specify uncached descriptors only 
             // and the new Async functions to get the descriptors of unpaired devices as well. 
             var result = await selectedCharacteristic.GetDescriptorsAsync(BluetoothCacheMode.Uncached);
@@ -501,118 +416,64 @@ private async void ServiceList_SelectionChanged()
                 }
             }
 
-            // Enable/disable operations based on the GattCharacteristicProperties.
-            EnableCharacteristicPanels(selectedCharacteristic.CharacteristicProperties);
+            ValueChangedSubscribeToggle();  
+            AddValueChangedHandler();
+            
+            return;
         }
 
-        private void SetVisibility(UIElement element, bool visible)
+    
+        public Scenario2_Client()
         {
-            element.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
-        }
-
-        private void EnableCharacteristicPanels(GattCharacteristicProperties properties)
-        {
-            // BT_Code: Hide the controls which do not apply to this characteristic.
-            SetVisibility(CharacteristicReadButton, properties.HasFlag(GattCharacteristicProperties.Read));
-
-            SetVisibility(CharacteristicWritePanel,
-                properties.HasFlag(GattCharacteristicProperties.Write) ||
-                properties.HasFlag(GattCharacteristicProperties.WriteWithoutResponse));
-            CharacteristicWriteValue.Text = "";
-
-            SetVisibility(ValueChangedSubscribeToggle, properties.HasFlag(GattCharacteristicProperties.Indicate) ||
-                                                       properties.HasFlag(GattCharacteristicProperties.Notify));
-
-        }
-
-        private async void CharacteristicReadButton_Click()
-        {
-            // BT_Code: Read the actual value from the device by using Uncached.
-            GattReadResult result = await selectedCharacteristic.ReadValueAsync(BluetoothCacheMode.Uncached);
-            if (result.Status == GattCommunicationStatus.Success)
+            
+            if (deviceWatcher == null)
             {
-                string formattedResult = FormatValueByPresentation(result.Value, presentationFormat);
-                rootPage.NotifyUser($"Read result: {formattedResult}", NotifyType.StatusMessage);
+                StartBleDeviceWatcher();
+                rootPage.NotifyUser($"Device watcher started.", NotifyType.StatusMessage);
             }
             else
             {
-                rootPage.NotifyUser($"Read failed: {result.Status}", NotifyType.ErrorMessage);
+                StopBleDeviceWatcher();
+                rootPage.NotifyUser($"Device watcher stopped.", NotifyType.StatusMessage);
+            }
+            InitializeComponent();
+            Connect();
+            
+        }
+
+        protected override async void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            var success = await ClearBluetoothLEDeviceAsync();
+            if (!success)
+            {
+                rootPage.NotifyUser("Error: Unable to reset app state", NotifyType.ErrorMessage);
             }
         }
 
-        private async void CharacteristicWriteButton_Click()
+        private void AddValueChangedHandler()
         {
-            if (!String.IsNullOrEmpty(CharacteristicWriteValue.Text))
+            //ValueChangedSubscribeToggle.Content = "Unsubscribe from value changes";
+            if (!subscribedForNotifications)
             {
-                var writeBuffer = CryptographicBuffer.ConvertStringToBinary(CharacteristicWriteValue.Text,
-                    BinaryStringEncoding.Utf8);
-
-                var writeSuccessful = await WriteBufferToSelectedCharacteristicAsync(writeBuffer);
-            }
-            else
-            {
-                rootPage.NotifyUser("No data to write to device", NotifyType.ErrorMessage);
+                registeredCharacteristic = selectedCharacteristic;
+                registeredCharacteristic.ValueChanged += Characteristic_ValueChanged;
+                subscribedForNotifications = true;
             }
         }
 
-        private async void CharacteristicWriteButtonInt_Click()
+        private void RemoveValueChangedHandler()
         {
-            if (!String.IsNullOrEmpty(CharacteristicWriteValue.Text))
+            //ValueChangedSubscribeToggle.Content = "Subscribe to value changes";
+            if (subscribedForNotifications)
             {
-                int chara = 65520;
-               /* var isValidValue = Int32.TryParse(CharacteristicWriteValue.Text, out chara);
-                if (isValidValue)
-                {*/
-                    var writer = new DataWriter();
-                    writer.ByteOrder = ByteOrder.LittleEndian;
-                    writer.WriteInt32(chara);
-
-                    var writeSuccessful = await WriteBufferToSelectedCharacteristicAsync(writer.DetachBuffer());
-                /*}
-                else
-                {
-                    rootPage.NotifyUser("Data to write has to be an int32", NotifyType.ErrorMessage);
-                }*/
-            }
-            else
-            {
-                rootPage.NotifyUser("No data to write to device", NotifyType.ErrorMessage);
-            }
-        }
-
-        private async Task<bool> WriteBufferToSelectedCharacteristicAsync(IBuffer buffer)
-        {
-            try
-            {
-                // BT_Code: Writes the value from the buffer to the characteristic.
-                var result = await selectedCharacteristic.WriteValueWithResultAsync(buffer);
-
-                if (result.Status == GattCommunicationStatus.Success)
-                {
-                    rootPage.NotifyUser("Successfully wrote value to device", NotifyType.StatusMessage);
-                    return true;
-                }
-                else
-                {
-                    rootPage.NotifyUser($"Write failed: {result.Status}", NotifyType.ErrorMessage);
-                    return false;
-                }
-            }
-            catch (Exception ex) when (ex.HResult == E_BLUETOOTH_ATT_INVALID_PDU)
-            {
-                rootPage.NotifyUser(ex.Message, NotifyType.ErrorMessage);
-                return false;
-            }
-            catch (Exception ex) when (ex.HResult == E_BLUETOOTH_ATT_WRITE_NOT_PERMITTED || ex.HResult == E_ACCESSDENIED)
-            {
-                // This usually happens when a device reports that it support writing, but it actually doesn't.
-                rootPage.NotifyUser(ex.Message, NotifyType.ErrorMessage);
-                return false;
+                registeredCharacteristic.ValueChanged -= Characteristic_ValueChanged;
+                registeredCharacteristic = null;
+                subscribedForNotifications = false;
             }
         }
 
         private bool subscribedForNotifications = false;
-        private async void ValueChangedSubscribeToggle_Click()
+        private async void ValueChangedSubscribeToggle()
         {
             if (!subscribedForNotifications)
             {
@@ -637,7 +498,7 @@ private async void ServiceList_SelectionChanged()
 
                     if (status == GattCommunicationStatus.Success)
                     {
-                        AddValueChangedHandler();
+                        //AddValueChangedHandler();
                         rootPage.NotifyUser("Successfully subscribed for value changes", NotifyType.StatusMessage);
                     }
                     else
@@ -664,7 +525,7 @@ private async void ServiceList_SelectionChanged()
                     if (result == GattCommunicationStatus.Success)
                     {
                         subscribedForNotifications = false;
-                        RemoveValueChangedHandler();
+                        //RemoveValueChangedHandler();
                         rootPage.NotifyUser("Successfully un-registered for notifications", NotifyType.StatusMessage);
                     }
                     else
@@ -698,6 +559,7 @@ private async void ServiceList_SelectionChanged()
                 result += "7 G - " + Convert.ToString(data[6]) + "\n";
 
             var message = $"{result}";
+            //System.Diagnostics.Debug.WriteLine(message);
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
                 () => CharacteristicLatestValue.Text = message);
         }
