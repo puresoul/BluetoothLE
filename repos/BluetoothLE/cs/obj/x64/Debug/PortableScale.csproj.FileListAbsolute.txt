@@ -1,7 +1,6 @@
 C:\Users\adam\source\repos\BluetoothLE\cs\bin\x64\Debug\App.xbf
 C:\Users\adam\source\repos\BluetoothLE\cs\bin\x64\Debug\Styles\Styles.xbf
 C:\Users\adam\source\repos\BluetoothLE\cs\bin\x64\Debug\MainPage.xbf
-C:\Users\adam\source\repos\BluetoothLE\cs\bin\x64\Debug\Scenario2_Client.xbf
 C:\Users\adam\source\repos\BluetoothLE\cs\bin\x64\Debug\PortableScale.xr.xml
 C:\Users\adam\source\repos\BluetoothLE\cs\bin\x64\Debug\PortableScale.exe
 C:\Users\adam\source\repos\BluetoothLE\cs\bin\x64\Debug\PortableScale.pdb
@@ -116,17 +115,13 @@ C:\Users\adam\source\repos\BluetoothLE\cs\obj\x64\Debug\App.g.i.cs
 C:\Users\adam\source\repos\BluetoothLE\cs\obj\x64\Debug\App.g.cs
 C:\Users\adam\source\repos\BluetoothLE\cs\obj\x64\Debug\MainPage.g.i.cs
 C:\Users\adam\source\repos\BluetoothLE\cs\obj\x64\Debug\MainPage.g.cs
-C:\Users\adam\source\repos\BluetoothLE\cs\obj\x64\Debug\Scenario2_Client.g.i.cs
-C:\Users\adam\source\repos\BluetoothLE\cs\obj\x64\Debug\Scenario2_Client.g.cs
 C:\Users\adam\source\repos\BluetoothLE\cs\obj\x64\Debug\XamlTypeInfo.g.cs
 C:\Users\adam\source\repos\BluetoothLE\cs\obj\x64\Debug\App.xaml
 C:\Users\adam\source\repos\BluetoothLE\cs\obj\x64\Debug\Styles\Styles.xaml
 C:\Users\adam\source\repos\BluetoothLE\cs\obj\x64\Debug\MainPage.xaml
-C:\Users\adam\source\repos\BluetoothLE\cs\obj\x64\Debug\Scenario2_Client.xaml
 C:\Users\adam\source\repos\BluetoothLE\cs\obj\x64\Debug\App.xbf
 C:\Users\adam\source\repos\BluetoothLE\cs\obj\x64\Debug\Styles\Styles.xbf
 C:\Users\adam\source\repos\BluetoothLE\cs\obj\x64\Debug\MainPage.xbf
-C:\Users\adam\source\repos\BluetoothLE\cs\obj\x64\Debug\Scenario2_Client.xbf
 C:\Users\adam\source\repos\BluetoothLE\cs\obj\x64\Debug\XamlSaveStateFile.xml
 C:\Users\adam\source\repos\BluetoothLE\cs\obj\x64\Debug\PortableScale.csproj.CoreCompileInputs.cache
 C:\Users\adam\source\repos\BluetoothLE\cs\obj\x64\Debug\PortableScale.exe
@@ -218,3 +213,4 @@ C:\Users\adam\source\repos\BluetoothLE\cs\obj\x64\Debug\FxResources.System.Secur
 C:\Users\adam\source\repos\BluetoothLE\cs\obj\x64\Debug\FxResources.System.Security.Cryptography.Encoding.SR.resw
 C:\Users\adam\source\repos\BluetoothLE\cs\obj\x64\Debug\FxResources.System.Security.Cryptography.Primitives.SR.resw
 C:\Users\adam\source\repos\BluetoothLE\cs\obj\x64\Debug\FxResources.System.Security.Cryptography.X509Certificates.SR.resw
+C:\Users\adam\source\repos\BluetoothLE\cs\obj\x64\Debug\PortableScale.csprojResolveAssemblyReference.cache

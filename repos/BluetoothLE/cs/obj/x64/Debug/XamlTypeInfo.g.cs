@@ -132,29 +132,25 @@ namespace SDKTemplate.PortableScale_XamlTypeInfo
 
         private void InitTypeTables()
         {
-            _typeNameTable = new string[10];
-            _typeNameTable[0] = "SDKTemplate.ScenarioBindingConverter";
-            _typeNameTable[1] = "Object";
-            _typeNameTable[2] = "SDKTemplate.MainPage";
-            _typeNameTable[3] = "Windows.UI.Xaml.Controls.Page";
-            _typeNameTable[4] = "Windows.UI.Xaml.Controls.UserControl";
-            _typeNameTable[5] = "System.Collections.Generic.List`1<SDKTemplate.Scenario>";
-            _typeNameTable[6] = "SDKTemplate.Scenario";
-            _typeNameTable[7] = "String";
-            _typeNameTable[8] = "System.Type";
-            _typeNameTable[9] = "SDKTemplate.Scenario2_Client";
+            _typeNameTable = new string[8];
+            _typeNameTable[0] = "SDKTemplate.MainPage";
+            _typeNameTable[1] = "Windows.UI.Xaml.Controls.Page";
+            _typeNameTable[2] = "Windows.UI.Xaml.Controls.UserControl";
+            _typeNameTable[3] = "System.Collections.Generic.List`1<SDKTemplate.Scenario>";
+            _typeNameTable[4] = "Object";
+            _typeNameTable[5] = "SDKTemplate.Scenario";
+            _typeNameTable[6] = "String";
+            _typeNameTable[7] = "System.Type";
 
-            _typeTable = new global::System.Type[10];
-            _typeTable[0] = typeof(global::SDKTemplate.ScenarioBindingConverter);
-            _typeTable[1] = typeof(global::System.Object);
-            _typeTable[2] = typeof(global::SDKTemplate.MainPage);
-            _typeTable[3] = typeof(global::Windows.UI.Xaml.Controls.Page);
-            _typeTable[4] = typeof(global::Windows.UI.Xaml.Controls.UserControl);
-            _typeTable[5] = typeof(global::System.Collections.Generic.List<global::SDKTemplate.Scenario>);
-            _typeTable[6] = typeof(global::SDKTemplate.Scenario);
-            _typeTable[7] = typeof(global::System.String);
-            _typeTable[8] = typeof(global::System.Type);
-            _typeTable[9] = typeof(global::SDKTemplate.Scenario2_Client);
+            _typeTable = new global::System.Type[8];
+            _typeTable[0] = typeof(global::SDKTemplate.MainPage);
+            _typeTable[1] = typeof(global::Windows.UI.Xaml.Controls.Page);
+            _typeTable[2] = typeof(global::Windows.UI.Xaml.Controls.UserControl);
+            _typeTable[3] = typeof(global::System.Collections.Generic.List<global::SDKTemplate.Scenario>);
+            _typeTable[4] = typeof(global::System.Object);
+            _typeTable[5] = typeof(global::SDKTemplate.Scenario);
+            _typeTable[6] = typeof(global::System.String);
+            _typeTable[7] = typeof(global::System.Type);
         }
 
         private int LookupTypeIndexByName(string typeName)
@@ -189,12 +185,10 @@ namespace SDKTemplate.PortableScale_XamlTypeInfo
             return -1;
         }
 
-        private object Activate_0_ScenarioBindingConverter() { return new global::SDKTemplate.ScenarioBindingConverter(); }
-        private object Activate_2_MainPage() { return new global::SDKTemplate.MainPage(); }
-        private object Activate_5_List() { return new global::System.Collections.Generic.List<global::SDKTemplate.Scenario>(); }
-        private object Activate_6_Scenario() { return new global::SDKTemplate.Scenario(); }
-        private object Activate_9_Scenario2_Client() { return new global::SDKTemplate.Scenario2_Client(); }
-        private void VectorAdd_5_List(object instance, object item)
+        private object Activate_0_MainPage() { return new global::SDKTemplate.MainPage(); }
+        private object Activate_3_List() { return new global::System.Collections.Generic.List<global::SDKTemplate.Scenario>(); }
+        private object Activate_5_Scenario() { return new global::SDKTemplate.Scenario(); }
+        private void VectorAdd_3_List(object instance, object item)
         {
             var collection = (global::System.Collections.Generic.ICollection<global::SDKTemplate.Scenario>)instance;
             var newItem = (global::SDKTemplate.Scenario)item;
@@ -211,63 +205,49 @@ namespace SDKTemplate.PortableScale_XamlTypeInfo
             switch (typeIndex)
             {
 
-            case 0:   //  SDKTemplate.ScenarioBindingConverter
-                userType = new global::SDKTemplate.PortableScale_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
-                userType.Activator = Activate_0_ScenarioBindingConverter;
-                userType.SetIsLocalType();
-                xamlType = userType;
-                break;
-
-            case 1:   //  Object
-                xamlType = new global::SDKTemplate.PortableScale_XamlTypeInfo.XamlSystemBaseType(typeName, type);
-                break;
-
-            case 2:   //  SDKTemplate.MainPage
+            case 0:   //  SDKTemplate.MainPage
                 userType = new global::SDKTemplate.PortableScale_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Windows.UI.Xaml.Controls.Page"));
-                userType.Activator = Activate_2_MainPage;
+                userType.Activator = Activate_0_MainPage;
                 userType.AddMemberName("Scenarios");
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
-            case 3:   //  Windows.UI.Xaml.Controls.Page
+            case 1:   //  Windows.UI.Xaml.Controls.Page
                 xamlType = new global::SDKTemplate.PortableScale_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 4:   //  Windows.UI.Xaml.Controls.UserControl
+            case 2:   //  Windows.UI.Xaml.Controls.UserControl
                 xamlType = new global::SDKTemplate.PortableScale_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 5:   //  System.Collections.Generic.List`1<SDKTemplate.Scenario>
+            case 3:   //  System.Collections.Generic.List`1<SDKTemplate.Scenario>
                 userType = new global::SDKTemplate.PortableScale_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
-                userType.CollectionAdd = VectorAdd_5_List;
+                userType.CollectionAdd = VectorAdd_3_List;
                 userType.SetIsReturnTypeStub();
                 xamlType = userType;
                 break;
 
-            case 6:   //  SDKTemplate.Scenario
+            case 4:   //  Object
+                xamlType = new global::SDKTemplate.PortableScale_XamlTypeInfo.XamlSystemBaseType(typeName, type);
+                break;
+
+            case 5:   //  SDKTemplate.Scenario
                 userType = new global::SDKTemplate.PortableScale_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
-                userType.Activator = Activate_6_Scenario;
+                userType.Activator = Activate_5_Scenario;
                 userType.AddMemberName("Title");
                 userType.AddMemberName("ClassType");
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
-            case 7:   //  String
+            case 6:   //  String
                 xamlType = new global::SDKTemplate.PortableScale_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 8:   //  System.Type
+            case 7:   //  System.Type
                 userType = new global::SDKTemplate.PortableScale_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
                 userType.SetIsReturnTypeStub();
-                xamlType = userType;
-                break;
-
-            case 9:   //  SDKTemplate.Scenario2_Client
-                userType = new global::SDKTemplate.PortableScale_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Windows.UI.Xaml.Controls.Page"));
-                userType.Activator = Activate_9_Scenario2_Client;
-                userType.SetIsLocalType();
                 xamlType = userType;
                 break;
             }

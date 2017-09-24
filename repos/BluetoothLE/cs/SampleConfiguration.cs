@@ -23,18 +23,13 @@ namespace SDKTemplate
 
         List<Scenario> scenarios = new List<Scenario>
         {
-          new Scenario() { Title="Server: Publish foreground", ClassType=typeof(Scenario2_Client) },
+          new Scenario() { Title="Server: Publish foreground", ClassType=typeof(MainPage) },
         };
 
 
         public string SelectedBleDeviceId = "BluetoothLE#BluetoothLE68:17:29:f9:ae:3d-18:7a:93:0e:79:31";
         public string SelectedBleDeviceName = "Chipsea-BLE";
 
-      
-        
- 
-        
-        
         //public string SelectedBleDeviceName
     }
 
