@@ -21,8 +21,9 @@ using Windows.Devices.Bluetooth.GenericAttributeProfile;
 using Windows.Devices.Enumeration;
 using Windows.Security.Cryptography;
 using Windows.Storage.Streams;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Core;
-
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
@@ -51,8 +52,9 @@ namespace SDKTemplate
         private GattPresentationFormat presentationFormat;
         private ObservableCollection<BluetoothLEDeviceDisplay> KnownDevices = new ObservableCollection<BluetoothLEDeviceDisplay>();
         private List<DeviceInformation> UnknownDevices = new List<DeviceInformation>();
-
         private DeviceWatcher deviceWatcher;
+
+
 
         #region Error Codes
         readonly int E_BLUETOOTH_ATT_WRITE_NOT_PERMITTED = unchecked((int)0x80650003);
@@ -347,6 +349,7 @@ namespace SDKTemplate
 
             CharacteristicCollection.Clear();
 
+
             IReadOnlyList<GattCharacteristic> characteristics = null;
             try
             {
@@ -414,7 +417,7 @@ namespace SDKTemplate
                     // In this case, we'll just encode the whole thing to a string to make it easy to print out.
                 }
             }
-
+    
             ValueChangedSubscribeToggle();  
             AddValueChangedHandler();
             
@@ -536,6 +539,7 @@ namespace SDKTemplate
             }
         }
 
+
         private async void Characteristic_ValueChanged(GattCharacteristic sender, GattValueChangedEventArgs args)
         {
             // BT_Code: An Indicate or Notify reported that the value has changed.
@@ -544,19 +548,68 @@ namespace SDKTemplate
             CryptographicBuffer.CopyToByteArray(args.CharacteristicValue, out data);
 
             string result = "";
+            string val;
+            string units = "";
 
-                result += "1 ? - " + Convert.ToString(data[0]) + "\n";
-                result += "2 State - " + Convert.ToString(data[1]) + "\n";
-                result += "3 Negative - " + Convert.ToString(data[2]) + "\n";
-                result += "4 Units - " + Convert.ToString(data[3]) + "\n";
-                result += "5 M - " + Convert.ToString(data[4]) + "\n";
-                result += "6 K - " + Convert.ToString(data[5]) + "\n";
-                result += "7 G - " + Convert.ToString(data[6]) + "\n";
+            result += "1 ? - " + Convert.ToString(data[0]) + "\n";
+            result += "2 State - " + Convert.ToString(data[1]) + "\n";
+            result += "3 Negative - " + Convert.ToString(data[2]) + "\n";
+            result += "4 Units - " + Convert.ToString(data[3]) + "\n";
+            result += "5 M - " + Convert.ToString(data[4]) + "\n";
+            result += "6 K - " + Convert.ToString(data[5]) + "\n";
+            result += "7 G - " + Convert.ToString(data[6]) + "\n";
+            var k = Convert.ToString(data[5]);
+            var g = Convert.ToString(data[6]);
+
+            if (Convert.ToInt32(data[1]) == 4)
+            {
+                await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+                () => CharacteristicLatestValue.Foreground = new SolidColorBrush(Windows.UI.Colors.Red));
+            }
+            else
+            {
+                await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+                () => CharacteristicLatestValue.Foreground = new SolidColorBrush(Windows.UI.Colors.White));
+            }
+
+
+            if (Convert.ToInt32(data[3]) == 3)
+            {
+                if (Convert.ToInt32(data[5]) > 0)
+                {
+                    units = " Kg";
+                }
+                else
+                {
+                    units = " g";
+                }
+            }
+            if (Convert.ToInt32(data[3]) == 4) { units = " ? 4"; }
+
+            if (Convert.ToInt32(data[3]) == 6) { units = " ? 6"; }
+
+            if (Convert.ToInt32(data[5]) > 0)
+            {
+                val = k + "," + g;
+            }
+            else
+            {
+                val = g;
+            }
+
+            if (Convert.ToInt32(data[2]) == 2)
+            {
+                val = "-" + val;
+            }
+
+            val = val + units;
 
             var message = $"{result}";
             //System.Diagnostics.Debug.WriteLine(message);
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
-                () => CharacteristicLatestValue.Text = message);
+                () => CharacteristicLatestValue.Text = Convert.ToString(val));
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+                () => textBlock.Text = Convert.ToString(message));
         }
 
         private string FormatValueByPresentation(IBuffer buffer, GattPresentationFormat format)
@@ -637,6 +690,20 @@ namespace SDKTemplate
             return Encoding.UTF8.GetString(data);
         }
 
+        private void CharacteristicReadButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+
+        }
+
+        private void CharacteristicLatestValue_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Border_DoubleTapped(object sender, Windows.UI.Xaml.Input.DoubleTappedRoutedEventArgs e)
+        {
+
+        }
     }
 
 }

@@ -43,7 +43,7 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
                     <StackPanel x:Name="FooterPanel" Orientation="Vertical" RelativePanel.AlignBottomWithPanel="True">
-                
+
                     </StackPanel>
                 </RelativePanel>
             </SplitView.Pane>
