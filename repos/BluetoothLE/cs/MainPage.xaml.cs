@@ -84,99 +84,6 @@ namespace SDKTemplate
             Connect();
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-
-        }
-
-        /// <summary>
-        /// Called whenever the user changes selection in the scenarios list.  This method will navigate to the respective
-        /// sample scenario page.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ScenarioControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            // Clear the status block when navigating scenarios.
-            NotifyUser(String.Empty, NotifyType.StatusMessage);
-
-            ListBox scenarioListBox = sender as ListBox;
-            Scenario s = scenarioListBox.SelectedItem as Scenario;
-            if (s != null)
-            {
-
-                //if (Window.Current.Bounds.Width < 640)
-               // {
-
-               // }
-            }
-        }
-
-        public List<Scenario> Scenarios
-        {
-            get { return this.scenarios; }
-        }
-
-        /// <summary>
-        /// Display a message to the user.
-        /// This method may be called from any thread.
-        /// </summary>
-        /// <param name="strMessage"></param>
-        /// <param name="type"></param>
-        public void NotifyUser(string strMessage, NotifyType type)
-        {
-            // If called from the UI thread, then update immediately.
-            // Otherwise, schedule a task on the UI thread to perform the update.
-            if (Dispatcher.HasThreadAccess)
-            {
-                UpdateStatus(strMessage, type);
-            }
-            else
-            {
-                var task = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => UpdateStatus(strMessage, type));
-            }
-        }
-
-        private void UpdateStatus(string strMessage, NotifyType type)
-        {
-            switch (type)
-            {
-                case NotifyType.StatusMessage:
-                    StatusBorder.Background = new SolidColorBrush(Windows.UI.Colors.Green);
-                    break;
-                case NotifyType.ErrorMessage:
-                    StatusBorder.Background = new SolidColorBrush(Windows.UI.Colors.Red);
-                    break;
-            }
-
-            StatusBlock.Text = strMessage;
-
-            // Collapse the StatusBlock if it has no text to conserve real estate.
-            StatusBorder.Visibility = (StatusBlock.Text != String.Empty) ? Visibility.Visible : Visibility.Collapsed;
-            if (StatusBlock.Text != String.Empty)
-            {
-                StatusBorder.Visibility = Visibility.Visible;
-                StatusPanel.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                StatusBorder.Visibility = Visibility.Collapsed;
-                StatusPanel.Visibility = Visibility.Collapsed;
-            }
-        }
-
-        async void Footer_Click(object sender, RoutedEventArgs e)
-        {
-            await Windows.System.Launcher.LaunchUriAsync(new Uri(((HyperlinkButton)sender).Tag.ToString()));
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-
-
         #region Enumerating Services
 
         private async Task<bool> ClearBluetoothLEDeviceAsync()
@@ -389,6 +296,131 @@ namespace SDKTemplate
         }
         #endregion
 
+        #region Mainwindows
+
+        /// <summary>
+        /// Called whenever the user changes selection in the scenarios list.  This method will navigate to the respective
+        /// sample scenario page.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /*private void ScenarioControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Clear the status block when navigating scenarios.
+            NotifyUser(String.Empty, NotifyType.StatusMessage);
+
+            ListBox scenarioListBox = sender as ListBox;
+            Scenario s = scenarioListBox.SelectedItem as Scenario;
+            if (s != null)
+            {
+
+                //if (Window.Current.Bounds.Width < 640)
+               // {
+
+               // }
+            }
+        }*/
+
+        public class ScenarioBindingConverter : IValueConverter
+        {
+            public object Convert(object value, Type targetType, object parameter, string language)
+            {
+                Scenario s = value as Scenario;
+                return (MainPage.Current.Scenarios.IndexOf(s) + 1) + ") " + s.Title;
+            }
+
+            public object ConvertBack(object value, Type targetType, object parameter, string language)
+            {
+                return true;
+            }
+        }
+
+        public List<Scenario> Scenarios
+        {
+            get { return this.scenarios; }
+        }
+
+        /// <summary>
+        /// Display a message to the user.
+        /// This method may be called from any thread.
+        /// </summary>
+        /// <param name="strMessage"></param>
+        /// <param name="type"></param>
+        public void NotifyUser(string strMessage, NotifyType type)
+        {
+            // If called from the UI thread, then update immediately.
+            // Otherwise, schedule a task on the UI thread to perform the update.
+            if (Dispatcher.HasThreadAccess)
+            {
+                UpdateStatus(strMessage, type);
+            }
+            else
+            {
+                var task = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => UpdateStatus(strMessage, type));
+            }
+        }
+
+        private void UpdateStatus(string strMessage, NotifyType type)
+        {
+            switch (type)
+            {
+                case NotifyType.StatusMessage:
+                    StatusBorder.Background = new SolidColorBrush(Windows.UI.Colors.Green);
+                    break;
+                case NotifyType.ErrorMessage:
+                    StatusBorder.Background = new SolidColorBrush(Windows.UI.Colors.Red);
+                    break;
+            }
+
+            StatusBlock.Text = strMessage;
+
+            // Collapse the StatusBlock if it has no text to conserve real estate.
+            StatusBorder.Visibility = (StatusBlock.Text != String.Empty) ? Visibility.Visible : Visibility.Collapsed;
+            if (StatusBlock.Text != String.Empty)
+            {
+                StatusBorder.Visibility = Visibility.Visible;
+                StatusPanel.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                StatusBorder.Visibility = Visibility.Collapsed;
+                StatusPanel.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        async void Footer_Click(object sender, RoutedEventArgs e)
+        {
+            await Windows.System.Launcher.LaunchUriAsync(new Uri(((HyperlinkButton)sender).Tag.ToString()));
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CharacteristicReadButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+
+        }
+
+        private void CharacteristicLatestValue_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Border_DoubleTapped(object sender, Windows.UI.Xaml.Input.DoubleTappedRoutedEventArgs e)
+        {
+
+        }
+
+        public enum NotifyType
+        {
+            StatusMessage,
+            ErrorMessage
+        }
+
+        #endregion
+
         private async void Connect()
         {
 
@@ -538,6 +570,7 @@ namespace SDKTemplate
             return;
         }
 
+        #region Provisioning
 
         protected override async void OnNavigatedFrom(NavigationEventArgs e)
         {
@@ -786,49 +819,9 @@ namespace SDKTemplate
             return Encoding.UTF8.GetString(data);
         }
 
-        private void CharacteristicReadButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-        {
-
-        }
-
-        private void CharacteristicLatestValue_SelectionChanged(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Border_DoubleTapped(object sender, Windows.UI.Xaml.Input.DoubleTappedRoutedEventArgs e)
-        {
-
-        }
-
+        #endregion
 
     }
-    public enum NotifyType
-    {
-        StatusMessage,
-        ErrorMessage
-    };
-
-    public class ScenarioBindingConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, string language)
-        {
-            Scenario s = value as Scenario;
-            return (MainPage.Current.Scenarios.IndexOf(s) + 1) + ") " + s.Title;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, string language)
-        {
-            return true;
-        }
-    }
-
-    // This scenario connects to the device selected in the "Discover
-    // GATT Servers" scenario and communicates with it.
-    // Note that this scenario is rather artificial because it communicates
-    // with an unknown service with unknown characteristics.
-    // In practice, your app will be interested in a specific service with
-    // a specific characteristic.
-
 }
+
 
