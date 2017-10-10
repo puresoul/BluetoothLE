@@ -55,11 +55,11 @@
                 <Border x:Name="StatusBorder" Margin="0,0,0,0">
                     <ScrollViewer VerticalScrollMode="Disabled"  VerticalScrollBarVisibility="Disabled" MaxHeight="100">
                         <TextBlock x:Name="StatusBlock" FontWeight="Bold" 
-                                   MaxWidth="{Binding ElementName=Splitter, Path=ActualWidth}" Margin="10,10,10,20" TextWrapping="Wrap"  />
+                                   MaxWidth="{Binding ElementName=Splitter, Path=ActualWidth}" Margin="10,10,10,20" TextWrapping="Wrap" SelectionHighlightColor="#FF5A5D5A"  >
+                        </TextBlock>
                     </ScrollViewer>
                 </Border>
             </StackPanel>
         </RelativePanel>
-
     </Grid>
 </Page>

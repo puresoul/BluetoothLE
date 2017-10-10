@@ -70,7 +70,6 @@ namespace SDKTemplate
         {
             if (subscribedForNotifications)
             {
-                // Need to clear the CCCD from the remote device so we stop receiving notifications*/
                 var result = await registeredCharacteristic.WriteClientCharacteristicConfigurationDescriptorAsync(GattClientCharacteristicConfigurationDescriptorValue.None);
                 if (result != GattCommunicationStatus.Success)
                 {
@@ -114,27 +113,21 @@ namespace SDKTemplate
 
         private async void DeviceWatcher_Added(DeviceWatcher sender, DeviceInformation deviceInfo)
         {
-            // We must update the collection on the UI thread because the collection is databound to a UI element.
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 lock (this)
                 {
                     //Debug.WriteLine(String.Format("Added {0}{1}", deviceInfo.Id, deviceInfo.Name));
-
-                    // Protect against race condition if the task runs after the app stopped the deviceWatcher.
                     if (sender == deviceWatcher)
                     {
-                        // Make sure device isn't already present in the list.
                         if (FindBluetoothLEDeviceDisplay(deviceInfo.Id) == null)
                         {
                             if (deviceInfo.Name != string.Empty)
                             {
-                                // If device has a friendly name display it immediately.
                                 KnownDevices.Add(new BluetoothLEDeviceDisplay(deviceInfo));
                             }
                             else
                             {
-                                // Add it to a list in case the name gets updated later. 
                                 UnknownDevices.Add(deviceInfo);
                             }
                         }
@@ -146,20 +139,16 @@ namespace SDKTemplate
 
         private async void DeviceWatcher_Updated(DeviceWatcher sender, DeviceInformationUpdate deviceInfoUpdate)
         {
-            // We must update the collection on the UI thread because the collection is databound to a UI element.
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 lock (this)
                 {
                     //Debug.WriteLine(String.Format("Updated {0}{1}", deviceInfoUpdate.Id, ""));
-
-                    // Protect against race condition if the task runs after the app stopped the deviceWatcher.
                     if (sender == deviceWatcher)
                     {
                         BluetoothLEDeviceDisplay bleDeviceDisplay = FindBluetoothLEDeviceDisplay(deviceInfoUpdate.Id);
                         if (bleDeviceDisplay != null)
                         {
-                            // Device is already being displayed - update UX.
                             bleDeviceDisplay.Update(deviceInfoUpdate);
                             return;
                         }
@@ -168,7 +157,6 @@ namespace SDKTemplate
                         if (deviceInfo != null)
                         {
                             deviceInfo.Update(deviceInfoUpdate);
-                            // If device has been updated with a friendly name it's no longer unknown.
                             if (deviceInfo.Name != String.Empty)
                             {
                                 KnownDevices.Add(new BluetoothLEDeviceDisplay(deviceInfo));
@@ -182,17 +170,14 @@ namespace SDKTemplate
 
         private async void DeviceWatcher_Removed(DeviceWatcher sender, DeviceInformationUpdate deviceInfoUpdate)
         {
-            // We must update the collection on the UI thread because the collection is databound to a UI element.
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 lock (this)
                 {
                     //Debug.WriteLine(String.Format("Removed {0}{1}", deviceInfoUpdate.Id, ""));
 
-                    // Protect against race condition if the task runs after the app stopped the deviceWatcher.
                     if (sender == deviceWatcher)
                     {
-                        // Find the corresponding DeviceInformation in the collection and remove it.
                         BluetoothLEDeviceDisplay bleDeviceDisplay = FindBluetoothLEDeviceDisplay(deviceInfoUpdate.Id);
                         if (bleDeviceDisplay != null)
                         {
@@ -211,10 +196,9 @@ namespace SDKTemplate
 
         private async void DeviceWatcher_EnumerationCompleted(DeviceWatcher sender, object e)
         {
-            // We must update the collection on the UI thread because the collection is databound to a UI element.
+
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-                // Protect against race condition if the task runs after the app stopped the deviceWatcher.
                 if (sender == deviceWatcher)
                 {
                     //this.NotifyUser($"{KnownDevices.Count} devices found. Enumeration completed.",
@@ -225,10 +209,10 @@ namespace SDKTemplate
 
         private async void DeviceWatcher_Stopped(DeviceWatcher sender, object e)
         {
-            // We must update the collection on the UI thread because the collection is databound to a UI element.
+
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-                // Protect against race condition if the task runs after the app stopped the deviceWatcher.
+
                 if (sender == deviceWatcher)
                 {
                     this.NotifyUser($"No longer watching for devices.",
@@ -239,11 +223,9 @@ namespace SDKTemplate
 
         private void StartBleDeviceWatcher()
         {
-            // Additional properties we would like about the device.
-            // Property strings are documented here https://msdn.microsoft.com/en-us/library/windows/desktop/ff521659(v=vs.85).aspx
+
             string[] requestedProperties = { "System.Devices.Aep.DeviceAddress", "System.Devices.Aep.IsConnected", "System.Devices.Aep.Bluetooth.Le.IsConnectable" };
 
-            // BT_Code: Example showing paired and non-paired in a single query.
             string aqsAllBluetoothLEDevices = "(System.Devices.Aep.ProtocolId:=\"{bb7bb05e-5972-42b5-94fc-76eaa7084d49}\")";
 
             deviceWatcher =
@@ -252,13 +234,13 @@ namespace SDKTemplate
                         requestedProperties,
                         DeviceInformationKind.AssociationEndpoint);
 
-            // Register event handlers before starting the watcher.
+
             deviceWatcher.Added += DeviceWatcher_Added;
             deviceWatcher.Updated += DeviceWatcher_Updated;
             deviceWatcher.Removed += DeviceWatcher_Removed;
             deviceWatcher.EnumerationCompleted += DeviceWatcher_EnumerationCompleted;
             deviceWatcher.Stopped += DeviceWatcher_Stopped;
-            // Start over with an empty collection.
+
             KnownDevices.Clear();
             deviceWatcher.Start();
         }
@@ -267,9 +249,6 @@ namespace SDKTemplate
         {
             if (deviceWatcher != null)
             {
-                // Unregister the event handlers.
-
-                // Stop the watcher.
                 deviceWatcher.Stop();
                 deviceWatcher = null;
             }

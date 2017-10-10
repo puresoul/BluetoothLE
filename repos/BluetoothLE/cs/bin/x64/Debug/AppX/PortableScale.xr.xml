@@ -54,6 +54,7 @@
       <RootProperty Name="TextWrapping" />
       <RootProperty Name="Text" />
       <RootProperty Name="MaxWidth" />
+      <RootProperty Name="SelectionHighlightColor" />
       <RootProperty Name="Style" />
       <RootProperty Name="Inlines" />
       <RootProperty Name="TextAlignment" />
