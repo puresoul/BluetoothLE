@@ -20,25 +20,26 @@
                 <StackPanel Height="Auto" VerticalAlignment="Center" HorizontalAlignment="Center" Width="Auto" MinWidth="260" >
                     <TextBlock Style="{StaticResource ListItemTextStyle}" TextWrapping="Wrap" Margin="10,10,10,10" ScrollViewer.VerticalScrollBarVisibility="Disabled">
                 <Run Text="Scale Model: "/>
-                <Run x:ConnectionId='12'                                       FontWeight="Bold"/>
+                <Run x:ConnectionId='13'                                       FontWeight="Bold"/>
                     </TextBlock>
                     <StackPanel>
                         <StackPanel Margin="40,20,40,20">
                             <TextBlock x:ConnectionId='11' x:Name="CharacteristicLatestValue" FontSize="48" Margin="20,10,20,10" Text="" TextAlignment="Center"/>
+                            <TextBlock x:ConnectionId='12' x:Name="Debug" FontSize="10" Margin="20,10,20,10" Text="" TextAlignment="Center"/>
                         </StackPanel>
                     </StackPanel>
                     <StackPanel  VerticalAlignment="Bottom" HorizontalAlignment="Center" >
                         <StackPanel Orientation="Horizontal">
                             <Button x:ConnectionId='9' x:Name="Button0" Content="Tare"
-                        Visibility="Visible" Margin="15,5,5,5" Width="140" Height="140"             />
+                        Visibility="Visible" Margin="15,5,5,5" Width="140" Height="140"              BorderBrush="#FFF5F1F1" Background="Black" FocusVisualSecondaryBrush="#99FFFFFF"/>
                             <Button x:ConnectionId='10' x:Name="Button1" Content="Units"
-                        Visibility="Visible" Margin="5,5,15,5" Width="140" Height="140"              />
+                        Visibility="Visible" Margin="5,5,15,5" Width="140" Height="140"               BorderBrush="#FFFBF8F8" Background="Black" FocusVisualSecondaryBrush="#99FFFFFF"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <Button x:ConnectionId='7' x:Name="Button2" Content="H"
-                        Visibility="Visible" Margin="15,5,5,5" Width="140" Height="140"/>
-                            <Button x:ConnectionId='8' x:Name="Button3" Content="R"
-                        Visibility="Visible" Margin="5,5,15,5" Width="140" Height="140"/>
+                            <Button x:ConnectionId='7' x:Name="Button2" Content="Hold"
+                        Visibility="Visible" Margin="15,5,5,5" Width="140" Height="140" BorderBrush="#FFFBFBFB" Background="Black" FocusVisualSecondaryBrush="#99FFFFFF"/>
+                            <Button x:ConnectionId='8' x:Name="Button3" Content="Reset"
+                        Visibility="Visible" Margin="5,5,15,5" Width="140" Height="140" BorderBrush="#FFFFFCFC" Background="Black" FocusVisualSecondaryBrush="#99FFFFFF"/>
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom"  Height="120" Visibility="Collapsed">

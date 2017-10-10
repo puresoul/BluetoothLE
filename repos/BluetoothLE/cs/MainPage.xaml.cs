@@ -119,7 +119,7 @@ namespace SDKTemplate
             {
                 lock (this)
                 {
-                    Debug.WriteLine(String.Format("Added {0}{1}", deviceInfo.Id, deviceInfo.Name));
+                    //Debug.WriteLine(String.Format("Added {0}{1}", deviceInfo.Id, deviceInfo.Name));
 
                     // Protect against race condition if the task runs after the app stopped the deviceWatcher.
                     if (sender == deviceWatcher)
@@ -151,7 +151,7 @@ namespace SDKTemplate
             {
                 lock (this)
                 {
-                    Debug.WriteLine(String.Format("Updated {0}{1}", deviceInfoUpdate.Id, ""));
+                    //Debug.WriteLine(String.Format("Updated {0}{1}", deviceInfoUpdate.Id, ""));
 
                     // Protect against race condition if the task runs after the app stopped the deviceWatcher.
                     if (sender == deviceWatcher)
@@ -187,7 +187,7 @@ namespace SDKTemplate
             {
                 lock (this)
                 {
-                    Debug.WriteLine(String.Format("Removed {0}{1}", deviceInfoUpdate.Id, ""));
+                    //Debug.WriteLine(String.Format("Removed {0}{1}", deviceInfoUpdate.Id, ""));
 
                     // Protect against race condition if the task runs after the app stopped the deviceWatcher.
                     if (sender == deviceWatcher)
@@ -526,7 +526,7 @@ namespace SDKTemplate
             var writer = new DataWriter();
 
             writer.WriteBytes(tare);
-
+            this.NotifyUser("Scare tared", NotifyType.StatusMessage);
             var writeSuccessful = await WriteBufferToSelectedCharacteristicAsync(writer.DetachBuffer());
 
         }
@@ -556,7 +556,7 @@ namespace SDKTemplate
                     caseSwitch = 1;
                     break;
             }
-
+            this.NotifyUser("Units changed", NotifyType.StatusMessage);
             var writeSuccessful = await WriteBufferToSelectedCharacteristicAsync(writer.DetachBuffer());
 
         }
@@ -571,7 +571,6 @@ namespace SDKTemplate
 
                 if (result.Status == GattCommunicationStatus.Success)
                 {
-                    this.NotifyUser("Successfully wrote value to device", NotifyType.StatusMessage);
                     return true;
                 }
                 else
@@ -696,6 +695,7 @@ namespace SDKTemplate
             result += "5 M - " + Convert.ToString(data[4]) + "\n";
             result += "6 K - " + Convert.ToString(data[5]) + "\n";
             result += "7 G - " + Convert.ToString(data[6]) + "\n";
+
             var k = Convert.ToString(data[5]);
             var g = Convert.ToString(data[6]);
 
@@ -746,6 +746,10 @@ namespace SDKTemplate
             //System.Diagnostics.Debug.WriteLine(message);
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
                 () => CharacteristicLatestValue.Text = Convert.ToString(val));
+
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+                () => Debug.Text = Convert.ToString(result));
+
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
                 () => textBlock.Text = Convert.ToString(message));
         }
