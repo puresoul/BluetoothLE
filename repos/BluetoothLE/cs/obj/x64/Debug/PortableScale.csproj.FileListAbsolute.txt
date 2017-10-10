@@ -213,3 +213,4 @@ C:\Users\adam\source\repos\BluetoothLE\cs\obj\x64\Debug\FxResources.System.Secur
 C:\Users\adam\source\repos\BluetoothLE\cs\obj\x64\Debug\FxResources.System.Security.Cryptography.Encoding.SR.resw
 C:\Users\adam\source\repos\BluetoothLE\cs\obj\x64\Debug\FxResources.System.Security.Cryptography.Primitives.SR.resw
 C:\Users\adam\source\repos\BluetoothLE\cs\obj\x64\Debug\FxResources.System.Security.Cryptography.X509Certificates.SR.resw
+C:\Users\adam\source\repos\BluetoothLE\cs\obj\x64\Debug\PortableScale.csprojResolveAssemblyReference.cache

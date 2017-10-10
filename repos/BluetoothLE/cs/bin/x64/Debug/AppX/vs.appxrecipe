@@ -31,13 +31,13 @@
     <AppXManifest Include="C:\Users\adam\source\repos\BluetoothLE\cs\bin\x64\Debug\Core\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2017-10-10T21:12:54.572</Modified>
+      <Modified>2017-10-10T21:29:16.576</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="C:\Users\adam\source\repos\BluetoothLE\cs\bin\x64\Debug\PortableScale.exe">
       <PackagePath>entrypoint\PortableScale.exe</PackagePath>
-      <Modified>2017-10-10T21:12:53.338</Modified>
+      <Modified>2017-10-10T21:29:15.932</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\adam\.nuget\packages\Microsoft.CSharp\4.0.1\lib\netcore50\Microsoft.CSharp.dll">
       <PackagePath>Microsoft.CSharp.dll</PackagePath>
@@ -542,11 +542,11 @@
     <AppxPackagedFile Include="C:\Users\adam\source\repos\BluetoothLE\cs\bin\x64\Debug\resources.pri">
       <PackagePath>resources.pri</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2017-10-10T21:12:54.378</Modified>
+      <Modified>2017-10-10T21:29:16.404</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\adam\source\repos\BluetoothLE\cs\bin\x64\Debug\Core\PortableScale.exe">
       <PackagePath>PortableScale.exe</PackagePath>
-      <Modified>2017-10-10T21:12:54.569</Modified>
+      <Modified>2017-10-10T21:29:16.573</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>

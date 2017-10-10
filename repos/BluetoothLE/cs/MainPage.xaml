@@ -1,15 +1,3 @@
-<!--
-//*********************************************************
-//
-// Copyright (c) Microsoft. All rights reserved.
-// This code is licensed under the MIT License (MIT).
-// THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF
-// ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY
-// IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR
-// PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
-//
-//*********************************************************
--->
 <Page
     x:Class="SDKTemplate.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -41,10 +29,10 @@
                     </StackPanel>
                     <StackPanel  VerticalAlignment="Bottom" HorizontalAlignment="Center" >
                         <StackPanel Orientation="Horizontal">
-                            <Button x:Name="Button0" Content="T"
-                        Visibility="Visible" Margin="15,5,5,5" Width="140" Height="140" Click="Click"/>
-                            <Button x:Name="Button1" Content="U"
-                        Visibility="Visible" Margin="5,5,15,5" Width="140" Height="140"/>
+                            <Button x:Name="Button0" Content="Tare"
+                        Visibility="Visible" Margin="15,5,5,5" Width="140" Height="140" Click="Tare"/>
+                            <Button x:Name="Button1" Content="Units"
+                        Visibility="Visible" Margin="5,5,15,5" Width="140" Height="140" Click="Units"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <Button x:Name="Button2" Content="H"

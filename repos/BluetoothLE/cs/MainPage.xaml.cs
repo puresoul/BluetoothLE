@@ -36,6 +36,7 @@ namespace SDKTemplate
         private List<DeviceInformation> UnknownDevices = new List<DeviceInformation>();
         private DeviceWatcher deviceWatcher;
 
+        int caseSwitch = 1;
 
         #region Error Codes
         readonly int E_BLUETOOTH_ATT_WRITE_NOT_PERMITTED = unchecked((int)0x80650003);
@@ -418,7 +419,7 @@ namespace SDKTemplate
                      
                         foreach (var service in services)
                         {
-                            System.Diagnostics.Debug.WriteLine("service: " + service.Uuid.ToString());
+                            //System.Diagnostics.Debug.WriteLine("service: " + service.Uuid.ToString());
                             if (service.Uuid.ToString() == "0000fff0-0000-1000-8000-00805f9b34fb")
                             {
                                 selectedService = service;
@@ -447,8 +448,7 @@ namespace SDKTemplate
             var attributeInfoDisp = selectedService;
 
             CharacteristicCollection.Clear();
-
-
+            
             IReadOnlyList<GattCharacteristic> characteristics = null;
             try
             {
@@ -486,7 +486,7 @@ namespace SDKTemplate
                 {
                     writeCharacteristic = c;
                 }
-                System.Diagnostics.Debug.WriteLine("characteristic: " + c.Uuid.ToString());
+                //System.Diagnostics.Debug.WriteLine("characteristic: " + c.Uuid.ToString());
             }
             var result = await selectedCharacteristic.GetDescriptorsAsync(BluetoothCacheMode.Uncached);
             if (result.Status != GattCommunicationStatus.Success)
@@ -518,7 +518,7 @@ namespace SDKTemplate
         #region Provisioning
 
 
-        async void Click(object sender, RoutedEventArgs e)
+        async void Tare(object sender, RoutedEventArgs e)
         {
 
             byte[] tare = new byte[] { 0xFA,0x03};
@@ -530,6 +530,37 @@ namespace SDKTemplate
             var writeSuccessful = await WriteBufferToSelectedCharacteristicAsync(writer.DetachBuffer());
 
         }
+
+        async void Units(object sender, RoutedEventArgs e)
+        {
+
+            byte[] ml = new byte[] { 0xFA, 0x02, 0x01, 0x04 };
+            byte[] oz = new byte[] { 0xFA, 0x02, 0x01, 0x06 };
+            byte[] g = new byte[] { 0xFA, 0x02, 0x01, 0x03 };
+
+            var writer = new DataWriter();
+
+
+            switch (caseSwitch)
+            {
+                case 1:
+                    writer.WriteBytes(ml);
+                    caseSwitch++;
+                    break;
+                case 2:
+                    writer.WriteBytes(oz);
+                    caseSwitch++;
+                    break;
+                case 3:
+                    writer.WriteBytes(g);
+                    caseSwitch = 1;
+                    break;
+            }
+
+            var writeSuccessful = await WriteBufferToSelectedCharacteristicAsync(writer.DetachBuffer());
+
+        }
+
 
 
         private async Task<bool> WriteBufferToSelectedCharacteristicAsync(IBuffer buffer)
