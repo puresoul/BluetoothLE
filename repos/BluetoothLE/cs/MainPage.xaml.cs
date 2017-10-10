@@ -1,14 +1,3 @@
-//*********************************************************
-//
-// Copyright (c) Microsoft. All rights reserved.
-// This code is licensed under the MIT License (MIT).
-// THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF
-// ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY
-// IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR
-// PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
-//
-//*********************************************************
-
 using System;
 using System.Collections.Generic;
 using Windows.UI.Core;
@@ -17,8 +6,6 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-
-
 
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -30,14 +17,8 @@ using Windows.Devices.Enumeration;
 using Windows.Security.Cryptography;
 using Windows.Storage.Streams;
 
-
-// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
-
 namespace SDKTemplate
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class MainPage : Page
     {
         public static MainPage Current;
@@ -48,8 +29,7 @@ namespace SDKTemplate
         private GattCharacteristic selectedCharacteristic;
         private GattCharacteristic writeCharacteristic;
         private GattDeviceService selectedService;
-
-        // Only one registered characteristic at a time.
+        
         private GattCharacteristic registeredCharacteristic;
         private GattPresentationFormat presentationFormat;
         private ObservableCollection<BluetoothLEDeviceDisplay> KnownDevices = new ObservableCollection<BluetoothLEDeviceDisplay>();
@@ -67,9 +47,7 @@ namespace SDKTemplate
         public MainPage()
         {
             this.InitializeComponent();
-
-            // This is a static public property that allows downstream pages to get a handle to the MainPage instance
-            // in order to call methods that are in this class.
+            
             Current = this;
             if (deviceWatcher == null)
             {
@@ -297,7 +275,7 @@ namespace SDKTemplate
         }
         #endregion
 
-        #region Mainwindows
+        #region Main Window
 
         /// <summary>
         /// Called whenever the user changes selection in the scenarios list.  This method will navigate to the respective
@@ -305,23 +283,7 @@ namespace SDKTemplate
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        /*private void ScenarioControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            // Clear the status block when navigating scenarios.
-            NotifyUser(String.Empty, NotifyType.StatusMessage);
-
-            ListBox scenarioListBox = sender as ListBox;
-            Scenario s = scenarioListBox.SelectedItem as Scenario;
-            if (s != null)
-            {
-
-                //if (Window.Current.Bounds.Width < 640)
-               // {
-
-               // }
-            }
-        }*/
-
+      
         public class ScenarioBindingConverter : IValueConverter
         {
             public object Convert(object value, Type targetType, object parameter, string language)
@@ -349,8 +311,6 @@ namespace SDKTemplate
         /// <param name="type"></param>
         public void NotifyUser(string strMessage, NotifyType type)
         {
-            // If called from the UI thread, then update immediately.
-            // Otherwise, schedule a task on the UI thread to perform the update.
             if (Dispatcher.HasThreadAccess)
             {
                 UpdateStatus(strMessage, type);
@@ -374,8 +334,6 @@ namespace SDKTemplate
             }
 
             StatusBlock.Text = strMessage;
-
-            // Collapse the StatusBlock if it has no text to conserve real estate.
             StatusBorder.Visibility = (StatusBlock.Text != String.Empty) ? Visibility.Visible : Visibility.Collapsed;
             if (StatusBlock.Text != String.Empty)
             {
@@ -437,7 +395,6 @@ namespace SDKTemplate
 
                 try
                 {
-                    // BT_Code: BluetoothLEDevice.FromIdAsync must be called from a UI thread because it may prompt for consent.
                     bluetoothLeDevice = await BluetoothLEDevice.FromIdAsync(this.SelectedBleDeviceId);
 
                     if (bluetoothLeDevice == null)
@@ -453,16 +410,12 @@ namespace SDKTemplate
 
                 if (bluetoothLeDevice != null)
                 {
-                    // Note: BluetoothLEDevice.GattServices property will return an empty list for unpaired devices. For all uses we recommend using the GetGattServicesAsync method.
-                    // BT_Code: GetGattServicesAsync returns a list of all the supported services of the device (even if it's not paired to the system).
-                    // If the services supported by the device are expected to change during BT usage, subscribe to the GattServicesChanged event.
                     GattDeviceServicesResult resultx = await bluetoothLeDevice.GetGattServicesAsync(BluetoothCacheMode.Uncached);
 
                     if (resultx.Status == GattCommunicationStatus.Success)
                     {
                         var services = resultx.Services;
-                        //this.NotifyUser(String.Format("Found {0} services", services.Count), NotifyType.StatusMessage);
-
+                     
                         foreach (var service in services)
                         {
                             System.Diagnostics.Debug.WriteLine("service: " + service.Uuid.ToString());
@@ -472,7 +425,6 @@ namespace SDKTemplate
                             }
                         }
 
-                        //ServiceList.Visibility = Visibility.Visible;
                         break;
 
                     }
@@ -500,12 +452,9 @@ namespace SDKTemplate
             IReadOnlyList<GattCharacteristic> characteristics = null;
             try
             {
-                // Ensure we have access to the device.
                 var accessStatus = await attributeInfoDisp.RequestAccessAsync();
                 if (accessStatus == DeviceAccessStatus.Allowed)
                 {
-                    // BT_Code: Get all the child characteristics of a service. Use the cache mode to specify uncached characterstics only 
-                    // and the new Async functions to get the characteristics of unpaired devices as well. 
                     var resulty = await attributeInfoDisp.GetCharacteristicsAsync(BluetoothCacheMode.Uncached);
                     if (resulty.Status == GattCommunicationStatus.Success)
                     {
@@ -514,10 +463,8 @@ namespace SDKTemplate
                 }
                 else
                 {
-                    // Not granted access
                     this.NotifyUser("Error accessing service.", NotifyType.ErrorMessage);
 
-                    // On error, act as if there are no characteristics.
                     characteristics = new List<GattCharacteristic>();
 
                 }
@@ -526,7 +473,6 @@ namespace SDKTemplate
             {
                 this.NotifyUser("Restricted service. Can't read characteristics: " + ex.Message,
                     NotifyType.ErrorMessage);
-                // On error, act as if there are no characteristics.
                 characteristics = new List<GattCharacteristic>();
             }
 
@@ -542,30 +488,24 @@ namespace SDKTemplate
                 }
                 System.Diagnostics.Debug.WriteLine("characteristic: " + c.Uuid.ToString());
             }
-            //CharacteristicList.Visibility = Visibility.Visible;
-            // Get all the child descriptors of a characteristics. Use the cache mode to specify uncached descriptors only 
-            // and the new Async functions to get the descriptors of unpaired devices as well. 
             var result = await selectedCharacteristic.GetDescriptorsAsync(BluetoothCacheMode.Uncached);
             if (result.Status != GattCommunicationStatus.Success)
             {
                 this.NotifyUser("Descriptor read failure: " + result.Status.ToString(), NotifyType.ErrorMessage);
             }
 
-            // BT_Code: There's no need to access presentation format unless there's at least one. 
             presentationFormat = null;
             if (selectedCharacteristic.PresentationFormats.Count > 0)
             {
 
                 if (selectedCharacteristic.PresentationFormats.Count.Equals(1))
                 {
-                    // Get the presentation format since there's only one way of presenting it
                     presentationFormat = selectedCharacteristic.PresentationFormats[0];
                     this.NotifyUser(presentationFormat.ToString(), NotifyType.StatusMessage);
                 }
                 else
                 {
-                    // It's difficult to figure out how to split up a characteristic and encode its different parts properly.
-                    // In this case, we'll just encode the whole thing to a string to make it easy to print out.
+
                 }
             }
 
@@ -596,7 +536,6 @@ namespace SDKTemplate
         {
             try
             {
-                // BT_Code: Writes the value from the buffer to the characteristic.
                 var result = await writeCharacteristic.WriteValueWithResultAsync(buffer);
 
                 if (result.Status == GattCommunicationStatus.Success)
@@ -617,7 +556,6 @@ namespace SDKTemplate
             }
             catch (Exception ex) when (ex.HResult == E_BLUETOOTH_ATT_WRITE_NOT_PERMITTED || ex.HResult == E_ACCESSDENIED)
             {
-                // This usually happens when a device reports that it support writing, but it actually doesn't.
                 this.NotifyUser(ex.Message, NotifyType.ErrorMessage);
                 return false;
             }
@@ -656,7 +594,6 @@ namespace SDKTemplate
         {
             if (!subscribedForNotifications)
             {
-                // initialize status
                 GattCommunicationStatus status = GattCommunicationStatus.Unreachable;
                 var cccdValue = GattClientCharacteristicConfigurationDescriptorValue.None;
                 if (selectedCharacteristic.CharacteristicProperties.HasFlag(GattCharacteristicProperties.Indicate))
@@ -671,8 +608,6 @@ namespace SDKTemplate
 
                 try
                 {
-                    // BT_Code: Must write the CCCD in order for server to send indications.
-                    // We receive them in the ValueChanged event handler.
                     status = await selectedCharacteristic.WriteClientCharacteristicConfigurationDescriptorAsync(cccdValue);
 
                     if (status == GattCommunicationStatus.Success)
@@ -686,7 +621,6 @@ namespace SDKTemplate
                 }
                 catch (UnauthorizedAccessException ex)
                 {
-                    // This usually happens when a device reports that it support indicate, but it actually doesn't.
                     this.NotifyUser(ex.Message, NotifyType.ErrorMessage);
                 }
             }
@@ -694,9 +628,6 @@ namespace SDKTemplate
             {
                 try
                 {
-                    // BT_Code: Must write the CCCD in order for server to send notifications.
-                    // We receive them in the ValueChanged event handler.
-                    // Note that this sample configures either Indicate or Notify, but not both.
                     var result = await
                             selectedCharacteristic.WriteClientCharacteristicConfigurationDescriptorAsync(
                                 GattClientCharacteristicConfigurationDescriptorValue.None);
@@ -712,7 +643,6 @@ namespace SDKTemplate
                 }
                 catch (UnauthorizedAccessException ex)
                 {
-                    // This usually happens when a device reports that it support notify, but it actually doesn't.
                     this.NotifyUser(ex.Message, NotifyType.ErrorMessage);
                 }
             }
@@ -721,8 +651,6 @@ namespace SDKTemplate
 
         private async void Characteristic_ValueChanged(GattCharacteristic sender, GattValueChangedEventArgs args)
         {
-            // BT_Code: An Indicate or Notify reported that the value has changed.
-            // Display the new value with a timestamp.
             byte[] data;
             CryptographicBuffer.CopyToByteArray(args.CharacteristicValue, out data);
 
@@ -793,8 +721,6 @@ namespace SDKTemplate
 
         private string FormatValueByPresentation(IBuffer buffer, GattPresentationFormat format)
         {
-            // BT_Code: For the purpose of this sample, this function converts only UInt32 and
-            // UTF-8 buffers to readable text. It can be extended to support other formats if your app needs them.
             byte[] data;
             CryptographicBuffer.CopyToByteArray(buffer, out data);
             if (format != null)
@@ -816,19 +742,15 @@ namespace SDKTemplate
                 }
                 else
                 {
-                    // Add support for other format types as needed.
                     return "Unsupported format: " + CryptographicBuffer.EncodeToHexString(buffer);
                 }
             }
             else if (data != null)
             {
-                // We don't know what format to use. Let's try some well-known profiles, or default back to UTF-8.
                 if (selectedCharacteristic.Uuid.Equals(GattCharacteristicUuids.BatteryLevel))
                 {
                     try
                     {
-                        // battery level is encoded as a percentage value in the first byte according to
-                        // https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.battery_level.xml
                         return "Battery Level: " + data[0].ToString() + "%";
                     }
                     catch (ArgumentException)
@@ -836,15 +758,12 @@ namespace SDKTemplate
                         return "Battery Level: (unable to parse)";
                     }
                 }
-                // This is our custom calc service Result UUID. Format it like an Int
                 else if (selectedCharacteristic.Uuid.Equals(Constants.ResultCharacteristicUuid))
                 {
                     return BitConverter.ToInt32(data, 0).ToString();
                 }
-                // No guarantees on if a characteristic is registered for notifications.
                 else if (registeredCharacteristic != null)
                 {
-                    // This is our custom calc service Result UUID. Format it like an Int
                     if (registeredCharacteristic.Uuid.Equals(Constants.ResultCharacteristicUuid))
                     {
                         return BitConverter.ToInt32(data, 0).ToString();

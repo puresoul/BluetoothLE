@@ -3,10 +3,10 @@ using Windows.Devices.Bluetooth.GenericAttributeProfile;
 
 namespace SDKTemplate
 {
-    // Define the characteristics and other properties of our custom service.
+
     public class Constants
     {
-        // BT_Code: Initializes custom local parameters w/ properties, protection levels as well as common descriptors like User Description. 
+
         public static readonly GattLocalCharacteristicParameters gattOperandParameters = new GattLocalCharacteristicParameters
         {
             CharacteristicProperties = GattCharacteristicProperties.Write |

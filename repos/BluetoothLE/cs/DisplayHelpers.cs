@@ -86,12 +86,7 @@ namespace SDKTemplate
             var bluetoothBaseUuid = new Guid("00000000-0000-1000-8000-00805F9B34FB");
 
             var bytes = uuid.ToByteArray();
-            // Zero out the first and second bytes
-            // Note how each byte gets flipped in a section - 1234 becomes 34 12
-            // Example Guid: 35918bc9-1234-40ea-9779-889d79b753f0
-            //                   ^^^^
-            // bytes output = C9 8B 91 35 34 12 EA 40 97 79 88 9D 79 B7 53 F0
-            //                ^^ ^^
+
             bytes[0] = 0;
             bytes[1] = 0;
             var baseUuid = new Guid(bytes);
@@ -184,7 +179,7 @@ namespace SDKTemplate
         }
     }
 #endif
-    // This inverts the sense of a boolean.
+
     public class InvertConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
@@ -367,7 +362,6 @@ namespace SDKTemplate
         /// <returns></returns>
         public static ushort ConvertUuidToShortId(Guid uuid)
         {
-            // Get the short Uuid
             var bytes = uuid.ToByteArray();
             var shortUuid = (ushort) (bytes[0] | (bytes[1] << 8));
             return shortUuid;
