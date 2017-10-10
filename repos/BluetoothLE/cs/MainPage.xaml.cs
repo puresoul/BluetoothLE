@@ -46,6 +46,7 @@ namespace SDKTemplate
 
         private BluetoothLEDevice bluetoothLeDevice = null;
         private GattCharacteristic selectedCharacteristic;
+        private GattCharacteristic writeCharacteristic;
         private GattDeviceService selectedService;
 
         // Only one registered characteristic at a time.
@@ -535,6 +536,10 @@ namespace SDKTemplate
                 {
                     selectedCharacteristic = c;
                 }
+                if (c.Uuid.ToString() == "0000fff2-0000-1000-8000-00805f9b34fb")
+                {
+                    writeCharacteristic = c;
+                }
                 System.Diagnostics.Debug.WriteLine("characteristic: " + c.Uuid.ToString());
             }
             //CharacteristicList.Visibility = Visibility.Visible;
@@ -572,6 +577,51 @@ namespace SDKTemplate
 
         #region Provisioning
 
+
+        async void Click(object sender, RoutedEventArgs e)
+        {
+
+            byte[] tare = new byte[] { 0xFA,0x03};
+
+            var writer = new DataWriter();
+
+            writer.WriteBytes(tare);
+
+            var writeSuccessful = await WriteBufferToSelectedCharacteristicAsync(writer.DetachBuffer());
+
+        }
+
+
+        private async Task<bool> WriteBufferToSelectedCharacteristicAsync(IBuffer buffer)
+        {
+            try
+            {
+                // BT_Code: Writes the value from the buffer to the characteristic.
+                var result = await writeCharacteristic.WriteValueWithResultAsync(buffer);
+
+                if (result.Status == GattCommunicationStatus.Success)
+                {
+                    this.NotifyUser("Successfully wrote value to device", NotifyType.StatusMessage);
+                    return true;
+                }
+                else
+                {
+                    this.NotifyUser($"Write failed: {result.Status}", NotifyType.ErrorMessage);
+                    return false;
+                }
+            }
+            catch (Exception ex) when (ex.HResult == E_BLUETOOTH_ATT_INVALID_PDU)
+            {
+                this.NotifyUser(ex.Message, NotifyType.ErrorMessage);
+                return false;
+            }
+            catch (Exception ex) when (ex.HResult == E_BLUETOOTH_ATT_WRITE_NOT_PERMITTED || ex.HResult == E_ACCESSDENIED)
+            {
+                // This usually happens when a device reports that it support writing, but it actually doesn't.
+                this.NotifyUser(ex.Message, NotifyType.ErrorMessage);
+                return false;
+            }
+        }
         protected override async void OnNavigatedFrom(NavigationEventArgs e)
         {
             var success = await ClearBluetoothLEDeviceAsync();
