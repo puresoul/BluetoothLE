@@ -1,0 +1,13 @@
+//
+// MFCLibrary1.RC2 – prostředky, které Microsoft Visual C++ neupravuje přímo
+//
+
+#ifdef APSTUDIO_INVOKED
+#error Microsoft Visual C++ nemůže tento soubor upravit
+#endif //APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Sem přidejte ručně upravené prostředky...
+
+/////////////////////////////////////////////////////////////////////////////

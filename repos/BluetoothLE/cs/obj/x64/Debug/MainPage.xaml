@@ -37,9 +37,9 @@
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <Button x:ConnectionId='7' x:Name="Button2" Content="Hold"
-                        Visibility="Visible" Margin="15,5,5,5" Width="140" Height="140" BorderBrush="#FFFBFBFB" Background="Black" FocusVisualSecondaryBrush="#99FFFFFF"/>
+                        Visibility="Visible" Margin="15,5,5,5" Width="140" Height="140"              BorderBrush="#FFFBFBFB" Background="Black" FocusVisualSecondaryBrush="#99FFFFFF"/>
                             <Button x:ConnectionId='8' x:Name="Button3" Content="Reset"
-                        Visibility="Visible" Margin="5,5,15,5" Width="140" Height="140" BorderBrush="#FFFFFCFC" Background="Black" FocusVisualSecondaryBrush="#99FFFFFF"/>
+                        Visibility="Visible" Margin="5,5,15,5" Width="140" Height="140"               BorderBrush="#FFFFFCFC" Background="Black" FocusVisualSecondaryBrush="#99FFFFFF"/>
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom"  Height="120" Visibility="Collapsed">

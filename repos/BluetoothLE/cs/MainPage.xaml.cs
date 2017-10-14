@@ -47,8 +47,8 @@ namespace SDKTemplate
 
         public MainPage()
         {
-            this.InitializeComponent();
-            
+            InitializeComponent();
+
             Current = this;
             if (deviceWatcher == null)
             {
@@ -59,8 +59,7 @@ namespace SDKTemplate
             {
                 StopBleDeviceWatcher();
                 this.NotifyUser($"Device watcher stopped.", NotifyType.StatusMessage);
-            }
-            InitializeComponent();
+            }  
             Connect();
         }
 
@@ -332,21 +331,6 @@ namespace SDKTemplate
             await Windows.System.Launcher.LaunchUriAsync(new Uri(((HyperlinkButton)sender).Tag.ToString()));
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void CharacteristicReadButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-        {
-
-        }
-
-        private void CharacteristicLatestValue_SelectionChanged(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void Border_DoubleTapped(object sender, Windows.UI.Xaml.Input.DoubleTappedRoutedEventArgs e)
         {
 
@@ -494,8 +478,33 @@ namespace SDKTemplate
             return;
         }
 
-        #region Provisioning
+        #region Buttons
 
+        async void Hold(object sender, RoutedEventArgs e)
+        {
+
+            ValueChangedSubscribeToggle();
+
+            if (!subscribedForNotifications)
+            {
+                AddValueChangedHandler();
+                await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+                () => CharacteristicLatestValue.Foreground = new SolidColorBrush(Windows.UI.Colors.White));
+            } else { 
+                RemoveValueChangedHandler();
+                await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+                () => CharacteristicLatestValue.Foreground = new SolidColorBrush(Windows.UI.Colors.Yellow));
+            }   
+            
+
+        }
+
+        async void Reset(object sender, RoutedEventArgs e)
+        {
+            RemoveValueChangedHandler();
+            InitializeComponent();
+            Connect();
+        }
 
         async void Tare(object sender, RoutedEventArgs e)
         {
@@ -505,9 +514,15 @@ namespace SDKTemplate
             var writer = new DataWriter();
 
             writer.WriteBytes(tare);
-            this.NotifyUser("Scare tared", NotifyType.StatusMessage);
-            var writeSuccessful = await WriteBufferToSelectedCharacteristicAsync(writer.DetachBuffer());
+            this.NotifyUser("Scale tared", NotifyType.StatusMessage);
+            try
+            {
+                var writeSuccessful = await WriteBufferToSelectedCharacteristicAsync(writer.DetachBuffer());
+            }
+            catch (Exception ex)
+            {
 
+            }
         }
 
         async void Units(object sender, RoutedEventArgs e)
@@ -536,12 +551,18 @@ namespace SDKTemplate
                     break;
             }
             this.NotifyUser("Units changed", NotifyType.StatusMessage);
-            var writeSuccessful = await WriteBufferToSelectedCharacteristicAsync(writer.DetachBuffer());
+            try
+            {
+                var writeSuccessful = await WriteBufferToSelectedCharacteristicAsync(writer.DetachBuffer());
+            }
+            catch (Exception ex)
+            {
 
+            }
         }
+        #endregion
 
-
-
+        #region Provisioning
         private async Task<bool> WriteBufferToSelectedCharacteristicAsync(IBuffer buffer)
         {
             try
@@ -605,18 +626,18 @@ namespace SDKTemplate
             {
                 GattCommunicationStatus status = GattCommunicationStatus.Unreachable;
                 var cccdValue = GattClientCharacteristicConfigurationDescriptorValue.None;
-                if (selectedCharacteristic.CharacteristicProperties.HasFlag(GattCharacteristicProperties.Indicate))
-                {
-                    cccdValue = GattClientCharacteristicConfigurationDescriptorValue.Indicate;
-                }
-
-                else if (selectedCharacteristic.CharacteristicProperties.HasFlag(GattCharacteristicProperties.Notify))
-                {
-                    cccdValue = GattClientCharacteristicConfigurationDescriptorValue.Notify;
-                }
-
                 try
                 {
+                    if (selectedCharacteristic.CharacteristicProperties.HasFlag(GattCharacteristicProperties.Indicate))
+                    {
+                        cccdValue = GattClientCharacteristicConfigurationDescriptorValue.Indicate;
+                    }
+
+                    else if (selectedCharacteristic.CharacteristicProperties.HasFlag(GattCharacteristicProperties.Notify))
+                    {
+                        cccdValue = GattClientCharacteristicConfigurationDescriptorValue.Notify;
+                    }
+
                     status = await selectedCharacteristic.WriteClientCharacteristicConfigurationDescriptorAsync(cccdValue);
 
                     if (status == GattCommunicationStatus.Success)
@@ -635,11 +656,12 @@ namespace SDKTemplate
             }
             else
             {
-                try
-                {
+
                     var result = await
                             selectedCharacteristic.WriteClientCharacteristicConfigurationDescriptorAsync(
                                 GattClientCharacteristicConfigurationDescriptorValue.None);
+                try
+                {
                     if (result == GattCommunicationStatus.Success)
                     {
                         subscribedForNotifications = false;
@@ -657,38 +679,33 @@ namespace SDKTemplate
             }
         }
 
+        #endregion
 
         private async void Characteristic_ValueChanged(GattCharacteristic sender, GattValueChangedEventArgs args)
         {
             byte[] data;
             CryptographicBuffer.CopyToByteArray(args.CharacteristicValue, out data);
 
-            string result = "";
             string val;
             string units = "";
-
-            result += "1 ? - " + Convert.ToString(data[0]) + "\n";
-            result += "2 State - " + Convert.ToString(data[1]) + "\n";
-            result += "3 Negative - " + Convert.ToString(data[2]) + "\n";
-            result += "4 Units - " + Convert.ToString(data[3]) + "\n";
-            result += "5 M - " + Convert.ToString(data[4]) + "\n";
-            result += "6 K - " + Convert.ToString(data[5]) + "\n";
-            result += "7 G - " + Convert.ToString(data[6]) + "\n";
 
             var k = Convert.ToString(data[5]);
             var g = Convert.ToString(data[6]);
 
             if (Convert.ToInt32(data[1]) == 4)
             {
-                await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
-                () => CharacteristicLatestValue.Foreground = new SolidColorBrush(Windows.UI.Colors.Red));
+              await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+              () => CharacteristicLatestValue.Foreground = new SolidColorBrush(Windows.UI.Colors.Red));
+              
+            } else {
+                if (Convert.ToInt32(data[2]) == 2){
+                    await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+                    () => CharacteristicLatestValue.Foreground = new SolidColorBrush(Windows.UI.Colors.Aquamarine));
+                } else {
+                    await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+                    () => CharacteristicLatestValue.Foreground = new SolidColorBrush(Windows.UI.Colors.White));
+                }
             }
-            else
-            {
-                await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
-                () => CharacteristicLatestValue.Foreground = new SolidColorBrush(Windows.UI.Colors.White));
-            }
-
 
             if (Convert.ToInt32(data[3]) == 3)
             {
@@ -717,20 +734,14 @@ namespace SDKTemplate
             if (Convert.ToInt32(data[2]) == 2)
             {
                 val = "-" + val;
+
             }
 
             val = val + units;
 
-            var message = $"{result}";
-            //System.Diagnostics.Debug.WriteLine(message);
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
                 () => CharacteristicLatestValue.Text = Convert.ToString(val));
 
-            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
-                () => Debug.Text = Convert.ToString(result));
-
-            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
-                () => textBlock.Text = Convert.ToString(message));
         }
 
         private string FormatValueByPresentation(IBuffer buffer, GattPresentationFormat format)
@@ -802,7 +813,7 @@ namespace SDKTemplate
             return Encoding.UTF8.GetString(data);
         }
 
-        #endregion
+
 
     }
 }

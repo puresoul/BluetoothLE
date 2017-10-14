@@ -1,0 +1,124 @@
+// Skript prostředků, který generuje Microsoft Visual C++
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generuje se z prostředku TEXTINCLUDE 2.
+//
+#ifndef APSTUDIO_INVOKED
+#include "targetver.h"
+#endif
+#include "afxres.h"
+#include "verrsrc.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE
+BEGIN
+    "#ifndef APSTUDIO_INVOKED\r\n"
+    "#include ""targetver.h""\r\n"
+    "#endif\r\n"
+    "#include ""afxres.h""\r\n"
+    "#include ""verrsrc.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CSY)\r\n"
+    "LANGUAGE 5, 1\r\n"
+    "#include ""res\\MFCLibrary1.rc2""  // prostředky upravené jinak než pomocí Microsoft Visual C++\r\n"
+#ifndef _AFXDLL
+    "#include ""afxres.rc""      // Standardní komponenty\r\n"
+#endif
+    "#endif\r\n"
+    "\0"
+END
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // APSTUDIO_INVOKED
+
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CSY)
+LANGUAGE 5, 1
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Verze
+//
+
+VS_VERSION_INFO     VERSIONINFO
+  FILEVERSION       1,0,0,1
+  PRODUCTVERSION    1,0,0,1
+ FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
+#ifdef _DEBUG
+ FILEFLAGS VS_FF_DEBUG
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS VOS_NT_WINDOWS32
+ FILETYPE VFT_DLL
+ FILESUBTYPE VFT2_UNKNOWN
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040504B0"
+        BEGIN
+            VALUE "CompanyName", "TODO: <Název společnosti>"
+            VALUE "FileDescription", "TODO: <Popis souboru>"
+            VALUE "FileVersion",     "1.0.0.1"
+            VALUE "InternalName",    "MFCLibrary1.dll"
+            VALUE "LegalCopyright", "TODO: (c) <Název společnosti>. Všechna práva vyhrazena."
+            VALUE "OriginalFilename","MFCLibrary1.dll"
+            VALUE "ProductName", "TODO: <Název produktu>"
+            VALUE "ProductVersion",  "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x0405, 1200
+    END
+END
+
+#endif
+#ifndef APSTUDIO_INVOKED
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generuje se z prostředku TEXTINCLUDE 3.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CSY)
+LANGUAGE 5, 1
+#include "res\\MFCLibrary1.rc2"  // prostředky upravené jinak než pomocí Microsoft Visual C++
+#ifndef _AFXDLL
+#include "afxres.rc"      // Standardní komponenty
+#endif
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // není APSTUDIO_INVOKED
+
