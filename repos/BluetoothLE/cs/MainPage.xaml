@@ -7,7 +7,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     x:Name="Main"
-    MaxHeight="720" MaxWidth="880">
+    Height="720" Width="880"
+    MaxHeight="720" MaxWidth="880"
+    MinHeight="720" MinWidth="880">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
@@ -35,15 +37,15 @@
                     </StackPanel>
                     <StackPanel  VerticalAlignment="Bottom" HorizontalAlignment="Center" >
                         <StackPanel Orientation="Horizontal">
-                            <Button x:Name="Button0" Content="Tare"
-                        Visibility="Visible" Margin="15,5,5,5" Width="140" Height="140" Click="Tare" BorderBrush="#FFF5F1F1" Background="Black" FocusVisualSecondaryBrush="#99FFFFFF"/>
-                            <Button x:Name="Button1" Content="Units"
-                        Visibility="Visible" Margin="5,5,15,5" Width="140" Height="140" Click="Units" BorderBrush="#FFFBF8F8" Background="Black" FocusVisualSecondaryBrush="#99FFFFFF"/>
+                            <Button x:Name="TareButton" Content="Tare"
+                        Visibility="Visible" Margin="15,5,5,5" Width="140" Height="140" Click="Tare" BorderBrush="#FFF5F1F1" Background="Black" FocusVisualSecondaryBrush="#99FFFFFF" IsEnabled="False"/>
+                            <Button x:Name="UnitsButton" Content="Units"
+                        Visibility="Visible" Margin="5,5,15,5" Width="140" Height="140" Click="Units" BorderBrush="#FFFBF8F8" Background="Black" FocusVisualSecondaryBrush="#99FFFFFF" IsEnabled="False"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <Button x:Name="Button2" Content="Hold"
-                        Visibility="Visible" Margin="15,5,5,5" Width="140" Height="140" Click="Hold" BorderBrush="#FFFBFBFB" Background="Black" FocusVisualSecondaryBrush="#99FFFFFF"/>
-                            <Button x:Name="Button3" Content="Reset"
+                            <Button x:Name="HoldButton" Content="Hold"
+                        Visibility="Visible" Margin="15,5,5,5" Width="140" Height="140" Click="Hold" BorderBrush="#FFFBFBFB" Background="Black" FocusVisualSecondaryBrush="#99FFFFFF" IsEnabled="False"/>
+                            <Button x:Name="ResetButton" Content="Reset"
                         Visibility="Visible" Margin="5,5,15,5" Width="140" Height="140" Click="Reset" BorderBrush="#FFFFFCFC" Background="Black" FocusVisualSecondaryBrush="#99FFFFFF"/>
                         </StackPanel>
                     </StackPanel>

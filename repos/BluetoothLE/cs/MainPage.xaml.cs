@@ -41,6 +41,7 @@ namespace SDKTemplate
         private DeviceWatcher deviceWatcher;
 
         int caseSwitch = 1;
+        int loaded = 0;
         int cnt = 1;
 
         #region Error Codes
@@ -65,10 +66,9 @@ namespace SDKTemplate
                 StopBleDeviceWatcher();
                 this.NotifyUser($"Device watcher stopped.", NotifyType.StatusMessage);
             }
-            this.Main.Height = this.Main.MaxHeight;
-            this.Main.Width = this.Main.MaxWidth;
             this.Text.Text = "Mesure time\t\t\tMesured value\r\n--------------\t\t\t----------------\r\n";
             Connect();
+            
         }
 
         #region Enumerating Services
@@ -366,8 +366,7 @@ namespace SDKTemplate
 
                     if (bluetoothLeDevice == null)
                     {
-                        //this.NotifyUser("Failed to connect to device.", NotifyType.ErrorMessage);
-                        //continue;
+                        continue;
                     }
                 }
                 catch (Exception ex) when (ex.HResult == E_DEVICE_NOT_AVAILABLE)
@@ -469,41 +468,32 @@ namespace SDKTemplate
                     presentationFormat = selectedCharacteristic.PresentationFormats[0];
                     this.NotifyUser(presentationFormat.ToString(), NotifyType.StatusMessage);
                 }
-                else
-                {
 
-                }
             }
 
             ValueChangedSubscribeToggle();
             AddValueChangedHandler();
-            
+            HoldButton.IsEnabled = true;
+            TareButton.IsEnabled = true;
+            UnitsButton.IsEnabled = true;
+            loaded = 1;
             return;
         }
 
         #region Buttons
-
-
 
         private async void Save(object sender, RoutedEventArgs e)
         {
 
             FileSavePicker savePicker = new FileSavePicker();
             savePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
-            // Dropdown of file types the user can save the file as
             savePicker.FileTypeChoices.Add("Plain Text", new List<string>() { ".txt" });
-            // Default file name if the user does not type one in or select a file to replace
             savePicker.SuggestedFileName = "New Document";
             StorageFile file = await savePicker.PickSaveFileAsync();
             if (file != null)
             {
-                // Prevent updates to the remote version of the file until we finish making changes and call CompleteUpdatesAsync.
                 CachedFileManager.DeferUpdates(file);
-                // write to file
-                await FileIO.WriteTextAsync(file, Text.Text);
-                // Let Windows know that we're finished changing the file so the other app can update the remote version of the file.
-                // Completing updates may require Windows to ask for user input.
-               
+                await FileIO.WriteTextAsync(file, Text.Text);       
              }
         }
 
@@ -539,9 +529,21 @@ namespace SDKTemplate
 
         void Reset(object sender, RoutedEventArgs e)
         {
-            RemoveValueChangedHandler();
-            InitializeComponent();
-            Connect();
+            if (loaded == 0)
+            {
+                StopBleDeviceWatcher();
+                StartBleDeviceWatcher();
+                Connect();
+            }
+            else
+            {
+                HoldButton.IsEnabled = false;
+                TareButton.IsEnabled = false;
+                UnitsButton.IsEnabled = false;
+                RemoveValueChangedHandler();
+                InitializeComponent();
+                Connect();
+            }
         }
 
         void Tare(object sender, RoutedEventArgs e)
@@ -558,7 +560,7 @@ namespace SDKTemplate
             }
             catch (Exception ex)
             {
-
+                this.NotifyUser(ex.Message, NotifyType.ErrorMessage);
             }
         }
 
@@ -594,7 +596,7 @@ namespace SDKTemplate
             }
             catch (Exception ex)
             {
-
+                this.NotifyUser(ex.Message, NotifyType.ErrorMessage);
             }
         }
         #endregion
