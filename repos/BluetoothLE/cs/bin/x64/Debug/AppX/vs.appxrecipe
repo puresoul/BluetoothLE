@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <Machine>DESKTOP-NT9DFJC</Machine>
+    <Machine>ADAM</Machine>
     <WindowsUser>adam</WindowsUser>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetOsVersion>10.0</TargetOsVersion>
@@ -31,13 +31,13 @@
     <AppXManifest Include="C:\Users\adam\source\repos\BluetoothLE\cs\bin\x64\Debug\Core\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2017-10-14T20:17:38.496</Modified>
+      <Modified>2017-10-21T23:47:10.898</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="C:\Users\adam\source\repos\BluetoothLE\cs\bin\x64\Debug\PortableScale.exe">
       <PackagePath>entrypoint\PortableScale.exe</PackagePath>
-      <Modified>2017-10-14T20:17:37.839</Modified>
+      <Modified>2017-10-21T23:47:10.127</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\adam\.nuget\packages\Microsoft.CSharp\4.0.1\lib\netcore50\Microsoft.CSharp.dll">
       <PackagePath>Microsoft.CSharp.dll</PackagePath>
@@ -497,43 +497,47 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\adam\source\SharedContent\cs\Default.rd.xml">
       <PackagePath>Properties\Default.rd.xml</PackagePath>
-      <Modified>2017-09-13T15:00:02.000</Modified>
+      <Modified>2017-10-21T14:04:56.409</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\adam\source\SharedContent\media\microsoft-sdk.png">
       <PackagePath>Assets\microsoft-sdk.png</PackagePath>
-      <Modified>2017-09-13T15:00:02.000</Modified>
+      <Modified>2017-10-21T14:04:58.284</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\adam\source\SharedContent\media\smalltile-sdk.png">
       <PackagePath>Assets\smallTile-sdk.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2017-09-13T15:00:02.000</Modified>
+      <Modified>2017-10-21T14:04:58.305</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\adam\source\SharedContent\media\splash-sdk.png">
       <PackagePath>Assets\splash-sdk.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2017-09-13T15:00:02.000</Modified>
+      <Modified>2017-10-21T14:04:58.314</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\adam\source\SharedContent\media\squaretile-sdk.png">
       <PackagePath>Assets\squareTile-sdk.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2017-09-13T15:00:02.000</Modified>
+      <Modified>2017-10-21T14:04:58.320</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\adam\source\SharedContent\media\storelogo-sdk.png">
       <PackagePath>Assets\storeLogo-sdk.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2017-09-13T15:00:02.000</Modified>
+      <Modified>2017-10-21T14:04:58.329</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\adam\source\SharedContent\media\tile-sdk.png">
       <PackagePath>Assets\tile-sdk.png</PackagePath>
-      <Modified>2017-09-13T15:00:02.000</Modified>
+      <Modified>2017-10-21T14:04:58.336</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\adam\source\SharedContent\media\windows-sdk.png">
       <PackagePath>Assets\windows-sdk.png</PackagePath>
-      <Modified>2017-09-13T15:00:02.000</Modified>
+      <Modified>2017-10-21T14:04:58.338</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\adam\source\repos\BluetoothLE\cs\index.html">
+      <PackagePath>index.html</PackagePath>
+      <Modified>2017-10-21T18:20:33.820</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\adam\source\repos\BluetoothLE\cs\bin\x64\Debug\PortableScale.xr.xml">
       <PackagePath>PortableScale.xr.xml</PackagePath>
-      <Modified>2017-10-14T16:15:31.862</Modified>
+      <Modified>2017-10-21T23:40:06.770</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\UnionMetadata\10.0.15063.0\Windows.winmd">
       <PackagePath>WinMetadata\Windows.winmd</PackagePath>
@@ -542,11 +546,11 @@
     <AppxPackagedFile Include="C:\Users\adam\source\repos\BluetoothLE\cs\bin\x64\Debug\resources.pri">
       <PackagePath>resources.pri</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2017-10-14T20:17:38.314</Modified>
+      <Modified>2017-10-21T23:47:10.697</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\adam\source\repos\BluetoothLE\cs\bin\x64\Debug\Core\PortableScale.exe">
       <PackagePath>PortableScale.exe</PackagePath>
-      <Modified>2017-10-14T20:17:38.487</Modified>
+      <Modified>2017-10-21T23:47:10.894</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>

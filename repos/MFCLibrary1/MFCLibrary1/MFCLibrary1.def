@@ -1,6 +1,0 @@
-; MFCLibrary1.def: Deklaruje parametry modulu pro knihovnu DLL.
-
-LIBRARY
-
-EXPORTS
-    ; Tady můžou být explicitní exporty.

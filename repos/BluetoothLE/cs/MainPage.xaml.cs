@@ -29,7 +29,7 @@ namespace SDKTemplate
         private GattCharacteristic selectedCharacteristic;
         private GattCharacteristic writeCharacteristic;
         private GattDeviceService selectedService;
-        
+
         private GattCharacteristic registeredCharacteristic;
         private GattPresentationFormat presentationFormat;
         private ObservableCollection<BluetoothLEDeviceDisplay> KnownDevices = new ObservableCollection<BluetoothLEDeviceDisplay>();
@@ -37,6 +37,7 @@ namespace SDKTemplate
         private DeviceWatcher deviceWatcher;
 
         int caseSwitch = 1;
+        int cnt = 1;
 
         #region Error Codes
         readonly int E_BLUETOOTH_ATT_WRITE_NOT_PERMITTED = unchecked((int)0x80650003);
@@ -59,7 +60,7 @@ namespace SDKTemplate
             {
                 StopBleDeviceWatcher();
                 this.NotifyUser($"Device watcher stopped.", NotifyType.StatusMessage);
-            }  
+            }
             Connect();
         }
 
@@ -262,7 +263,7 @@ namespace SDKTemplate
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-      
+
         public class ScenarioBindingConverter : IValueConverter
         {
             public object Convert(object value, Type targetType, object parameter, string language)
@@ -379,7 +380,7 @@ namespace SDKTemplate
                     if (resultx.Status == GattCommunicationStatus.Success)
                     {
                         var services = resultx.Services;
-                     
+
                         foreach (var service in services)
                         {
                             //System.Diagnostics.Debug.WriteLine("service: " + service.Uuid.ToString());
@@ -411,7 +412,7 @@ namespace SDKTemplate
             var attributeInfoDisp = selectedService;
 
             CharacteristicCollection.Clear();
-            
+
             IReadOnlyList<GattCharacteristic> characteristics = null;
             try
             {
@@ -474,11 +475,24 @@ namespace SDKTemplate
 
             ValueChangedSubscribeToggle();
             AddValueChangedHandler();
-
+            this.Text.Text = "Mesure time\t\t\tMesured value\n--------------\t\t\t-----------------\n";
             return;
         }
 
         #region Buttons
+
+        void Clear(object sender, RoutedEventArgs e)
+        {
+            this.Text.Text = "Mesure time\t\t\tMesured value\n--------------\t\t\t----------------\n";
+            cnt = 1;
+        }
+
+        void AddMesure(object sender, RoutedEventArgs e)
+        {
+            string val = Text.Text + "\n" + cnt.ToString() + ".\t\t\t\t" + CharacteristicLatestValue.Text;
+            this.Text.Text = val;
+            cnt++;
+        }
 
         async void Hold(object sender, RoutedEventArgs e)
         {
@@ -495,20 +509,18 @@ namespace SDKTemplate
                 await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
                 () => CharacteristicLatestValue.Foreground = new SolidColorBrush(Windows.UI.Colors.Yellow));
             }   
-            
 
         }
 
-        async void Reset(object sender, RoutedEventArgs e)
+        void Reset(object sender, RoutedEventArgs e)
         {
             RemoveValueChangedHandler();
             InitializeComponent();
             Connect();
         }
 
-        async void Tare(object sender, RoutedEventArgs e)
+        void Tare(object sender, RoutedEventArgs e)
         {
-
             byte[] tare = new byte[] { 0xFA,0x03};
 
             var writer = new DataWriter();
@@ -517,7 +529,7 @@ namespace SDKTemplate
             this.NotifyUser("Scale tared", NotifyType.StatusMessage);
             try
             {
-                var writeSuccessful = await WriteBufferToSelectedCharacteristicAsync(writer.DetachBuffer());
+                var writeSuccessful = WriteBufferToSelectedCharacteristicAsync(writer.DetachBuffer());
             }
             catch (Exception ex)
             {
@@ -525,7 +537,7 @@ namespace SDKTemplate
             }
         }
 
-        async void Units(object sender, RoutedEventArgs e)
+        void Units(object sender, RoutedEventArgs e)
         {
 
             byte[] ml = new byte[] { 0xFA, 0x02, 0x01, 0x04 };
@@ -553,7 +565,7 @@ namespace SDKTemplate
             this.NotifyUser("Units changed", NotifyType.StatusMessage);
             try
             {
-                var writeSuccessful = await WriteBufferToSelectedCharacteristicAsync(writer.DetachBuffer());
+                var writeSuccessful = WriteBufferToSelectedCharacteristicAsync(writer.DetachBuffer());
             }
             catch (Exception ex)
             {
@@ -657,8 +669,7 @@ namespace SDKTemplate
             else
             {
 
-                    var result = await
-                            selectedCharacteristic.WriteClientCharacteristicConfigurationDescriptorAsync(
+                    var result = await selectedCharacteristic.WriteClientCharacteristicConfigurationDescriptorAsync(
                                 GattClientCharacteristicConfigurationDescriptorValue.None);
                 try
                 {
@@ -813,9 +824,18 @@ namespace SDKTemplate
             return Encoding.UTF8.GetString(data);
         }
 
+        private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
+        {
+
+        }
+
+        private void ScrollViewer_ViewChanged_1(object sender, ScrollViewerViewChangedEventArgs e)
+        {
+
+        }
 
 
-    }
+}
 }
 
 
