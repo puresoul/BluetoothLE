@@ -16,6 +16,10 @@ using Windows.Devices.Bluetooth.GenericAttributeProfile;
 using Windows.Devices.Enumeration;
 using Windows.Security.Cryptography;
 using Windows.Storage.Streams;
+using Windows.Storage.Pickers;
+using Windows.Storage;
+
+
 
 namespace SDKTemplate
 {
@@ -61,6 +65,9 @@ namespace SDKTemplate
                 StopBleDeviceWatcher();
                 this.NotifyUser($"Device watcher stopped.", NotifyType.StatusMessage);
             }
+            this.Main.Height = this.Main.MaxHeight;
+            this.Main.Width = this.Main.MaxWidth;
+            this.Text.Text = "Mesure time\t\t\tMesured value\r\n--------------\t\t\t----------------\r\n";
             Connect();
         }
 
@@ -332,11 +339,6 @@ namespace SDKTemplate
             await Windows.System.Launcher.LaunchUriAsync(new Uri(((HyperlinkButton)sender).Tag.ToString()));
         }
 
-        private void Border_DoubleTapped(object sender, Windows.UI.Xaml.Input.DoubleTappedRoutedEventArgs e)
-        {
-
-        }
-
         public enum NotifyType
         {
             StatusMessage,
@@ -475,29 +477,52 @@ namespace SDKTemplate
 
             ValueChangedSubscribeToggle();
             AddValueChangedHandler();
-            this.Text.Text = "Mesure time\t\t\tMesured value\n--------------\t\t\t-----------------\n";
+            
             return;
         }
 
         #region Buttons
 
+
+
+        private async void Save(object sender, RoutedEventArgs e)
+        {
+
+            FileSavePicker savePicker = new FileSavePicker();
+            savePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+            // Dropdown of file types the user can save the file as
+            savePicker.FileTypeChoices.Add("Plain Text", new List<string>() { ".txt" });
+            // Default file name if the user does not type one in or select a file to replace
+            savePicker.SuggestedFileName = "New Document";
+            StorageFile file = await savePicker.PickSaveFileAsync();
+            if (file != null)
+            {
+                // Prevent updates to the remote version of the file until we finish making changes and call CompleteUpdatesAsync.
+                CachedFileManager.DeferUpdates(file);
+                // write to file
+                await FileIO.WriteTextAsync(file, Text.Text);
+                // Let Windows know that we're finished changing the file so the other app can update the remote version of the file.
+                // Completing updates may require Windows to ask for user input.
+               
+             }
+        }
+
+
         void Clear(object sender, RoutedEventArgs e)
         {
-            this.Text.Text = "Mesure time\t\t\tMesured value\n--------------\t\t\t----------------\n";
+            this.Text.Text = "Mesure time\t\t\tMesured value\r\n--------------\t\t\t----------------\r\n";
             cnt = 1;
         }
 
         void AddMesure(object sender, RoutedEventArgs e)
         {
-            string val = Text.Text + "\n" + cnt.ToString() + ".\t\t\t\t" + CharacteristicLatestValue.Text;
+            string val = Text.Text + "\r\n" + cnt.ToString() + ".\t\t\t\t" + CharacteristicLatestValue.Text;
             this.Text.Text = val;
             cnt++;
         }
 
         async void Hold(object sender, RoutedEventArgs e)
         {
-
-            ValueChangedSubscribeToggle();
 
             if (!subscribedForNotifications)
             {
@@ -649,17 +674,24 @@ namespace SDKTemplate
                     {
                         cccdValue = GattClientCharacteristicConfigurationDescriptorValue.Notify;
                     }
-
-                    status = await selectedCharacteristic.WriteClientCharacteristicConfigurationDescriptorAsync(cccdValue);
-
-                    if (status == GattCommunicationStatus.Success)
+                    try
                     {
-                        this.NotifyUser("Successfully subscribed for value changes", NotifyType.StatusMessage);
+                        status = await selectedCharacteristic.WriteClientCharacteristicConfigurationDescriptorAsync(cccdValue);
+
+                        if (status == GattCommunicationStatus.Success)
+                        {
+                            this.NotifyUser("Successfully subscribed for value changes", NotifyType.StatusMessage);
+                        }
+                        else
+                        {
+                            this.NotifyUser($"Error registering for value changes: {status}", NotifyType.ErrorMessage);
+                        }
                     }
-                    else
+                    catch
                     {
                         this.NotifyUser($"Error registering for value changes: {status}", NotifyType.ErrorMessage);
                     }
+                    
                 }
                 catch (UnauthorizedAccessException ex)
                 {
@@ -668,11 +700,11 @@ namespace SDKTemplate
             }
             else
             {
-
-                    var result = await selectedCharacteristic.WriteClientCharacteristicConfigurationDescriptorAsync(
-                                GattClientCharacteristicConfigurationDescriptorValue.None);
                 try
                 {
+                    var result = await selectedCharacteristic.WriteClientCharacteristicConfigurationDescriptorAsync(
+                                GattClientCharacteristicConfigurationDescriptorValue.None);
+                
                     if (result == GattCommunicationStatus.Success)
                     {
                         subscribedForNotifications = false;
@@ -697,7 +729,7 @@ namespace SDKTemplate
             byte[] data;
             CryptographicBuffer.CopyToByteArray(args.CharacteristicValue, out data);
 
-            string val;
+            string val = "";
             string units = "";
 
             var k = Convert.ToString(data[5]);
@@ -710,6 +742,7 @@ namespace SDKTemplate
               
             } else {
                 if (Convert.ToInt32(data[2]) == 2){
+                    val = "-" + val;
                     await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
                     () => CharacteristicLatestValue.Foreground = new SolidColorBrush(Windows.UI.Colors.Aquamarine));
                 } else {
@@ -723,29 +756,24 @@ namespace SDKTemplate
                 if (Convert.ToInt32(data[5]) > 0)
                 {
                     units = " Kg";
+                    val = val + k + "," + g;
                 }
                 else
                 {
                     units = " g";
+                    val = val + g;
                 }
             }
-            if (Convert.ToInt32(data[3]) == 4) { units = " ? 4"; }
-
-            if (Convert.ToInt32(data[3]) == 6) { units = " ? 6"; }
-
-            if (Convert.ToInt32(data[5]) > 0)
+            if (Convert.ToInt32(data[3]) == 4)
             {
-                val = k + "," + g;
-            }
-            else
-            {
-                val = g;
+                units = " ml";
+                val = val + Convert.ToString(data[6]);
             }
 
-            if (Convert.ToInt32(data[2]) == 2)
+            if (Convert.ToInt32(data[3]) == 6)
             {
-                val = "-" + val;
-
+                units = " oz/lb";
+                val = val + Convert.ToString(data[6]);
             }
 
             val = val + units;
@@ -824,18 +852,12 @@ namespace SDKTemplate
             return Encoding.UTF8.GetString(data);
         }
 
-        private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
+
+        private void Main_SizeChanged(object sender, SizeChangedEventArgs e)
         {
 
         }
-
-        private void ScrollViewer_ViewChanged_1(object sender, ScrollViewerViewChangedEventArgs e)
-        {
-
-        }
-
-
-}
+    }
 }
 
 
